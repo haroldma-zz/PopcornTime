@@ -1,0 +1,6 @@
+[submodule "Universal.Nat"]
+	path = Universal.Nat
+	url = http://github.com/zumicts/Universal.Nat
+[submodule "Universal.Torrent"]
+	path = Universal.Torrent
+	url = http://github.com/zumicts/Universal.Torrent
