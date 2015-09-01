@@ -8,6 +8,8 @@
     xmlns:navigationService="using:PopcornTime.Services.NavigationService"
     xmlns:common="using:PopcornTime.Common"
     xmlns:tools="using:PopcornTime.Tools"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     DataContext="{Binding Movies, Mode=OneTime, Source={StaticResource ViewModelLocator}}">
 
@@ -15,7 +17,17 @@
         <Grid.Resources>
             <tools:ActualSizePropertyProxy Element="{Binding ElementName=ItemsWrapGrid}" x:Name="Proxy" />
         </Grid.Resources>
-        <common:BetterGridView SelectionMode="None" ItemsSource="{x:Bind ViewModel.MovieCollection, Mode=OneWay}" ItemTemplate="{StaticResource YtsMovieTemplate}">
+        <common:BetterGridView 
+            VerticalOffset="{x:Bind ViewModel.VerticalOffset, Mode=TwoWay}"
+            SelectionMode="None" 
+            IsItemClickEnabled="True" 
+            ItemsSource="{x:Bind ViewModel.MovieCollection, Mode=OneWay}" 
+            ItemTemplate="{StaticResource YtsMovieTemplate}">
+            <interactivity:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemClick">
+                    <core:InvokeCommandAction Command="{x:Bind ViewModel.MovieClickCommand}" />
+                </core:EventTriggerBehavior>
+            </interactivity:Interaction.Behaviors>
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid x:Name="ItemsWrapGrid" ItemWidth="{Binding ActualWidthValue, Source={StaticResource Proxy}, Converter={StaticResource UniformSpacingConverter}, ConverterParameter=210}" Orientation="Horizontal"/>

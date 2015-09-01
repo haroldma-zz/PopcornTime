@@ -6,5 +6,6 @@ namespace PopcornTime.ViewModels
     {
         public static AppKernel Kernel => App.Current?.Kernel ?? AppKernelFactory.Create();
         public MoviesViewModel Movies => Kernel.Resolve<MoviesViewModel>();
+        public MovieViewModel Movie => Kernel.Resolve<MovieViewModel>();
     }
 }

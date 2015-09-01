@@ -13,6 +13,6 @@ namespace PopcornTime.Web.Models
         [JsonProperty("page_number")]
         public uint PageNumber { get; set; }
 
-        public List<YtsMovie> Movies { get; set; }
+        public List<YtsMoviePartial> Movies { get; set; }
     }
 }

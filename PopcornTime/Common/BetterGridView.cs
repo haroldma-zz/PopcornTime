@@ -26,6 +26,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using PopcornTime.Extensions;
@@ -65,23 +66,26 @@ namespace PopcornTime.Common
 
         private static void VerticalOffsetPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var list = (BetterGridView) d;
+            var grid = (BetterGridView) d;
 
             RoutedEventHandler handler = null;
-            Action action = () =>
+            Action action = async () =>
             {
                 // ReSharper disable AccessToModifiedClosure
                 if (handler != null)
-                    list.Loaded -= handler;
+                    grid.Loaded -= handler;
                 // ReSharper restore AccessToModifiedClosure
-
-                if (list.VerticalOffset != list.ScrollViewer.VerticalOffset)
-                    list.ScrollViewer.ChangeView(null, (double) e.NewValue, null, true);
+                
+                if (grid.VerticalOffset.CompareTo(grid.ScrollViewer.VerticalOffset) != 0)
+                {
+                    await Task.Delay(1);
+                    grid.ScrollViewer.ChangeView(null, grid.VerticalOffset, null, true);
+                }
             };
             handler = (s, ee) => action();
 
-            if (list.ScrollViewer == null)
-                list.Loaded += handler;
+            if (grid.ScrollViewer == null)
+                grid.Loaded += handler;
             else
                 action();
         }

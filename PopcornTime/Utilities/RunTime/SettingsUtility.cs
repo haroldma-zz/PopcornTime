@@ -1,15 +1,22 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Newtonsoft.Json;
+using PopcornTime.Common;
+using PopcornTime.Extensions;
 using PopcornTime.Utilities.Interfaces;
+using Universal.Torrent.Common;
 
 namespace PopcornTime.Utilities.RunTime
 {
     public class SettingsUtility : ISettingsUtility
     {
+        private const string FileFallback = "SettingsUtility-Fallback/{0}.txt";
+
         private readonly Type[] _primitives =
         {
             typeof (string),
@@ -64,7 +71,14 @@ namespace PopcornTime.Utilities.RunTime
                 }
                 catch
                 {
-                    // ignored
+                    // too big, fallback to file
+                    var file = AsyncHelper.RunSync(() => StorageHelper.CreateFileAsync(string.Format(FileFallback, key), option:CreationCollisionOption.ReplaceExisting));
+                    using (var stream = AsyncHelper.RunSync(() => file.OpenStreamForWriteAsync()))
+                    {
+                        var bytes = Encoding.UTF8.GetBytes(json);
+                        stream.Write(bytes, 0, bytes.Length);
+                        settings[key] = string.Format(FileFallback, key);
+                    }
                 }
             }
         }
@@ -76,11 +90,27 @@ namespace PopcornTime.Utilities.RunTime
                 return otherwise;
             try
             {
+                var o = settings[key];
                 if (IsPrimitive(typeof (T)))
                 {
-                    return (T) settings[key];
+                    return (T)o;
                 }
-                var json = settings[key].ToString();
+                
+                var json = o.ToString();
+
+                var fallback = string.Format(FileFallback, key);
+                if (json == fallback)
+                {
+                    var file = AsyncHelper.RunSync(() => StorageHelper.GetFileAsync(fallback));
+                    using (var stream = AsyncHelper.RunSync(() => file.OpenStreamForReadAsync()))
+                    {
+                        var bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+                        json = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+                    }
+                    AsyncHelper.RunSync(() => file.DeleteAsync().AsTask());
+                }
+
                 return Deserialize<T>(json);
             }
             catch
@@ -98,12 +128,12 @@ namespace PopcornTime.Utilities.RunTime
 
         private string Serialize<T>(T item)
         {
-            return JsonConvert.SerializeObject(item);
+            return item.SerializeToJsonWithTypeInfo();
         }
 
         private T Deserialize<T>(string json)
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            return (T)json.TryDeserializeJsonWithTypeInfo();
         }
 
         private bool IsPrimitive(Type type)

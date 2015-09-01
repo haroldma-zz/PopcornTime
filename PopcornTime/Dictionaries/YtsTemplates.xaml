@@ -5,7 +5,7 @@
     xmlns:models="using:PopcornTime.Web.Models"
     xmlns:common="using:PopcornTime.Common">
 
-    <DataTemplate x:Key="YtsMovieTemplate" x:DataType="models:YtsMovie">
+    <DataTemplate x:Key="YtsMovieTemplate" x:DataType="models:YtsMoviePartial">
         <Grid Margin="10" Width="190" >
             <Grid>
                 <Grid.RowDefinitions>
@@ -23,7 +23,7 @@
                     </Border.Background>
                 </Border>
                 <common:ContentOnHoverControl Width="190" Height="281" Grid.Row="0">
-                    <Border CornerRadius="5"
+                    <Border CornerRadius="5" BorderThickness="2" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
                     Background="{ThemeResource OpaqueSystemChromeLowBrush}">
                         <Grid Margin="5">
                             <AppBarButton Icon="View" ToolTipService.ToolTip="Mark as Watched" IsCompact="True" />

@@ -109,6 +109,7 @@
     <Compile Include="AppEngine\Providers\NatManagerProvider.cs" />
     <Compile Include="AppEngine\Providers\ProviderHelper.cs" />
     <Compile Include="AppEngine\Providers\ClientEngineProvider.cs" />
+    <Compile Include="Common\AsyncHelper.cs" />
     <Compile Include="Common\BootStrapper.cs" />
     <Compile Include="Common\ColorThief.cs" />
     <Compile Include="Common\ContentOnHoverControl.cs" />
@@ -160,7 +161,11 @@
     <Compile Include="Utilities\RunTime\DispatcherUtility.cs" />
     <Compile Include="Utilities\RunTime\SettingsUtility.cs" />
     <Compile Include="ViewModels\MoviesViewModel.cs" />
+    <Compile Include="ViewModels\MovieViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\MoviePage.xaml.cs">
+      <DependentUpon>MoviePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MoviesPage.xaml.cs">
       <DependentUpon>MoviesPage.xaml</DependentUpon>
     </Compile>
@@ -197,6 +202,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MoviePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MoviesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -226,6 +235,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enums\" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

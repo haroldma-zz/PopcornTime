@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Newtonsoft.Json;
+using PopcornTime.IncrementalLoading;
 
 namespace PopcornTime.Extensions
 {

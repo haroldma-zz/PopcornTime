@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using PopcornTime.Common;
 using PopcornTime.Helpers;
 using PopcornTime.Utilities.Interfaces;
 using Universal.Torrent.Client;
@@ -16,7 +17,7 @@ namespace PopcornTime.AppEngine.Providers
             var port = settingsUtility.Read(ApplicationConstants.TorrentPortKey, ApplicationConstants.DefaultTorrentPort);
 
             var engineSettings =
-                new EngineSettings(StorageHelper.GetFolderAsync("torrents", StorageHelper.StorageStrategy.Temporary).Result , port)
+                new EngineSettings(AsyncHelper.RunSync(() => StorageHelper.EnsureFolderExistsAsync("torrents", StorageHelper.StorageStrategy.Temporary)) , port)
                 {
                     PreferEncryption = true,
                     AllowedEncryption = EncryptionTypes.All
