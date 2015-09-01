@@ -32,19 +32,19 @@ using PopcornTime.Extensions;
 
 namespace PopcornTime.Common
 {
-    public class ScrollListView : ListView
+    public class BetterListView : ListView
     {
         public static readonly DependencyProperty VerticalOffsetProperty =
-            DependencyProperty.RegisterAttached("VerticalOffset", typeof (double), typeof (ScrollListView),
+            DependencyProperty.RegisterAttached("VerticalOffset", typeof (double), typeof (BetterListView),
                 new PropertyMetadata(0, VerticalOffsetPropertyChanged));
 
         public static readonly DependencyProperty BetterSelectedIndexProperty =
-            DependencyProperty.RegisterAttached("BetterSelectedIndex", typeof (int), typeof (ScrollListView),
+            DependencyProperty.RegisterAttached("BetterSelectedIndex", typeof (int), typeof (BetterListView),
                 new PropertyMetadata(0, BetterSelectedIndexPropertyChanged));
 
         private ScrollViewer _scroll;
 
-        public ScrollListView()
+        public BetterListView()
         {
             Loaded += (s, e) =>
             {
@@ -84,7 +84,7 @@ namespace PopcornTime.Common
 
         private static void BetterSelectedIndexPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var list = (ScrollListView) d;
+            var list = (BetterListView) d;
 
             RoutedEventHandler handler = null;
             Action action = () =>
@@ -111,7 +111,7 @@ namespace PopcornTime.Common
 
         private static void VerticalOffsetPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var list = (ScrollListView) d;
+            var list = (BetterListView) d;
 
             RoutedEventHandler handler = null;
             Action action = () =>

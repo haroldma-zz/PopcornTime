@@ -6,9 +6,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigationService="using:PopcornTime.Services.NavigationService"
+    xmlns:common="using:PopcornTime.Common"
+    xmlns:tools="using:PopcornTime.Tools"
     mc:Ignorable="d"
     DataContext="{Binding Movies, Mode=OneTime, Source={StaticResource ViewModelLocator}}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource SystemChromeLowBrush}">
+        <Grid.Resources>
+            <tools:ActualSizePropertyProxy Element="{Binding ElementName=ItemsWrapGrid}" x:Name="Proxy" />
+        </Grid.Resources>
+        <common:BetterGridView SelectionMode="None" ItemsSource="{x:Bind ViewModel.MovieCollection, Mode=OneWay}" ItemTemplate="{StaticResource YtsMovieTemplate}">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid x:Name="ItemsWrapGrid" ItemWidth="{Binding ActualWidthValue, Source={StaticResource Proxy}, Converter={StaticResource UniformSpacingConverter}, ConverterParameter=210}" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </common:BetterGridView>
     </Grid>
 </navigationService:NavigatablePage>

@@ -1,0 +1,44 @@
+﻿<ResourceDictionary
+    x:Class="PopcornTime.Dictionaries.YtsTemplates"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:PopcornTime.Web.Models"
+    xmlns:common="using:PopcornTime.Common">
+
+    <DataTemplate x:Key="YtsMovieTemplate" x:DataType="models:YtsMovie">
+        <Grid Margin="10" Width="190" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border CornerRadius="5" Height="281"
+                    Background="{ThemeResource SystemControlBackgroundAccentBrush}" />
+
+                <Border Grid.Row="0" CornerRadius="5" Height="281">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{x:Bind MediumCoverImage}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <common:ContentOnHoverControl Width="190" Height="281" Grid.Row="0">
+                    <Border CornerRadius="5"
+                    Background="{ThemeResource OpaqueSystemChromeLowBrush}">
+                        <Grid Margin="5">
+                            <AppBarButton Icon="View" ToolTipService.ToolTip="Mark as Watched" IsCompact="True" />
+                            <AppBarButton Icon="Favorite" ToolTipService.ToolTip="Bookmark" HorizontalAlignment="Right" IsCompact="True" />
+                            <TextBlock FontSize="18" VerticalAlignment="Bottom" TextAlignment="Right">
+                                <Run Text="{x:Bind Rating}" />
+                                <Run Text="/ 10" />
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </common:ContentOnHoverControl>
+                <TextBlock Grid.Row="2" Text="{x:Bind Title}" Style="{StaticResource BaseTextBlockStyle}" />
+                <TextBlock Grid.Row="3" Text="{x:Bind Year}" Style="{StaticResource SubtleTextBlockStyle}" />
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

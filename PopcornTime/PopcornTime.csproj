@@ -111,12 +111,15 @@
     <Compile Include="AppEngine\Providers\ClientEngineProvider.cs" />
     <Compile Include="Common\BootStrapper.cs" />
     <Compile Include="Common\ColorThief.cs" />
+    <Compile Include="Common\ContentOnHoverControl.cs" />
     <Compile Include="Common\CurtainPrompt.cs" />
+    <Compile Include="IncrementalLoading\MoviesIncrementalLoadingCollection.cs" />
+    <Compile Include="Common\IncrementalLoadingBase.cs" />
     <Compile Include="Common\MessageBox.cs" />
     <Compile Include="Common\MMCQ.cs" />
     <Compile Include="Common\ObservableObject.cs" />
-    <Compile Include="Common\ScrollGridView.cs" />
-    <Compile Include="Common\ScrollListView.cs" />
+    <Compile Include="Common\BetterGridView.cs" />
+    <Compile Include="Common\BetterListView.cs" />
     <Compile Include="Common\UiBlocker.cs" />
     <Compile Include="Common\WeakEvent.cs" />
     <Compile Include="Extensions\ItemsControlExtensions.cs" />
@@ -137,8 +140,14 @@
     <Compile Include="Services\NavigationService\NavigationFacade.cs" />
     <Compile Include="Services\NavigationService\NavigationService.cs" />
     <Compile Include="Services\RunTime\InsightsService.cs" />
+    <Compile Include="Dictionaries\YtsTemplates.xaml.cs">
+      <DependentUpon>YtsTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ActualSizeProxy.cs" />
+    <Compile Include="Tools\Converters\UniformSpacingConverter.cs" />
     <Compile Include="Tools\Mvvm\Command.cs" />
     <Compile Include="Tools\Mvvm\ViewModelBase.cs" />
+    <Compile Include="Tools\Converters\VisibilityConverter.cs" />
     <Compile Include="Utilities\ColorUtility.cs" />
     <Compile Include="Utilities\DesignTime\DesignCredentialUtility.cs" />
     <Compile Include="Utilities\DesignTime\DesignDispatcherUtility.cs" />
@@ -180,12 +189,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dictionaries\TextStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dictionaries\YtsTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MoviesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PopcornTime.Web\PopcornTime.Web.csproj">
+      <Project>{1165a830-5d7f-406e-b638-070c8ba8dcfd}</Project>
+      <Name>PopcornTime.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Universal.FluentRest\Universal.FluentRest\Universal.FluentRest.csproj">
+      <Project>{4e4a941c-597d-4a34-8fc7-51452db2437c}</Project>
+      <Name>Universal.FluentRest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Universal.Nat\Universal.Nat\Universal.Nat.csproj">
       <Project>{4b7c52ae-58d8-4666-9a46-17cada2de40f}</Project>
       <Name>Universal.Nat</Name>

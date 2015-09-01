@@ -4,3 +4,6 @@
 [submodule "Universal.Torrent"]
 	path = Universal.Torrent
 	url = http://github.com/zumicts/Universal.Torrent
+[submodule "Universal.FluentRest"]
+	path = Universal.FluentRest
+	url = http://github.com/zumicts/Universal.FluentRest

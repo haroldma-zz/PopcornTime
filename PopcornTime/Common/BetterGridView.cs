@@ -32,15 +32,15 @@ using PopcornTime.Extensions;
 
 namespace PopcornTime.Common
 {
-    public class ScrollGridView : GridView
+    public class BetterGridView : GridView
     {
         public static readonly DependencyProperty VerticalOffsetProperty =
-            DependencyProperty.RegisterAttached("VerticalOffset", typeof (double), typeof (ScrollGridView),
+            DependencyProperty.RegisterAttached("VerticalOffset", typeof (double), typeof (BetterGridView),
                 new PropertyMetadata(0, VerticalOffsetPropertyChanged));
 
         private ScrollViewer _scroll;
 
-        public ScrollGridView()
+        public BetterGridView()
         {
             Loaded += (s, e) =>
             {
@@ -65,7 +65,7 @@ namespace PopcornTime.Common
 
         private static void VerticalOffsetPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var list = (ScrollGridView) d;
+            var list = (BetterGridView) d;
 
             RoutedEventHandler handler = null;
             Action action = () =>

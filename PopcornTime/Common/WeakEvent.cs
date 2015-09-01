@@ -7,6 +7,10 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace PopcornTime.Common
 {
+    // This class can used as a jumpstart for implementing ISupportIncrementalLoading.  
+    // Implementing the ISupportIncrementalLoading interfaces allows you to create a list that loads 
+    //  more data automatically when the user scrolls to the end of of a GridView or ListView. 
+
     /// <summary>
     ///     A base class that can monitor any event in a generic way.
     /// </summary>
