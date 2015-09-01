@@ -1,6 +1,10 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
+    "Autofac": "3.5.2",
+    "Humanizer": "1.37.7",
+    "Microsoft.ApplicationInsights.WindowsApps": "1.1.0",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
+    "Newtonsoft.Json": "7.0.1"
   },
   "frameworks": {
     "uap10.0": {}

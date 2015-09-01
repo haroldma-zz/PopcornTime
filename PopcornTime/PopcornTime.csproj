@@ -96,10 +96,68 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="AppEngine\AppKernel.cs" />
+    <Compile Include="AppEngine\AppKernelFactory.cs" />
+    <Compile Include="AppEngine\AppModule.cs" />
+    <Compile Include="AppEngine\Bootstrppers\IBootstrapper.cs" />
+    <Compile Include="AppEngine\Bootstrppers\TorrentBootstrapper.cs" />
+    <Compile Include="AppEngine\Modules\ServiceModule.cs" />
+    <Compile Include="AppEngine\Modules\UtilityModule.cs" />
+    <Compile Include="AppEngine\Modules\ViewModelModule.cs" />
+    <Compile Include="AppEngine\Providers\DhtListenerProvider.cs" />
+    <Compile Include="AppEngine\Providers\IProvider.cs" />
+    <Compile Include="AppEngine\Providers\NatManagerProvider.cs" />
+    <Compile Include="AppEngine\Providers\ProviderHelper.cs" />
+    <Compile Include="AppEngine\Providers\ClientEngineProvider.cs" />
+    <Compile Include="Common\BootStrapper.cs" />
+    <Compile Include="Common\ColorThief.cs" />
+    <Compile Include="Common\CurtainPrompt.cs" />
+    <Compile Include="Common\MessageBox.cs" />
+    <Compile Include="Common\MMCQ.cs" />
+    <Compile Include="Common\ObservableObject.cs" />
+    <Compile Include="Common\ScrollGridView.cs" />
+    <Compile Include="Common\ScrollListView.cs" />
+    <Compile Include="Common\UiBlocker.cs" />
+    <Compile Include="Common\WeakEvent.cs" />
+    <Compile Include="Extensions\ItemsControlExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TorrentExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Extensions\VisualTreeHelperExtensions.cs" />
+    <Compile Include="Helpers\ApplicationConstants.cs" />
+    <Compile Include="Helpers\DeviceHelper.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Services\DesignTime\DesignInsightsService.cs" />
+    <Compile Include="Services\Interfaces\IInsightsService.cs" />
+    <Compile Include="Services\RunTime\TorrentService.cs" />
+    <Compile Include="Services\NavigationService\DesignNavigationService.cs" />
+    <Compile Include="Services\NavigationService\INavigatable.cs" />
+    <Compile Include="Services\NavigationService\INavigationService.cs" />
+    <Compile Include="Services\NavigationService\NavigationEventArgs.cs" />
+    <Compile Include="Services\NavigationService\NavigationFacade.cs" />
+    <Compile Include="Services\NavigationService\NavigationService.cs" />
+    <Compile Include="Services\RunTime\InsightsService.cs" />
+    <Compile Include="Tools\Mvvm\Command.cs" />
+    <Compile Include="Tools\Mvvm\ViewModelBase.cs" />
+    <Compile Include="Utilities\ColorUtility.cs" />
+    <Compile Include="Utilities\DesignTime\DesignCredentialUtility.cs" />
+    <Compile Include="Utilities\DesignTime\DesignDispatcherUtility.cs" />
+    <Compile Include="Utilities\DesignTime\DesignSettingsUtility.cs" />
+    <Compile Include="Utilities\Interfaces\ICredentialUtility.cs" />
+    <Compile Include="Utilities\Interfaces\IDispatcherUtility.cs" />
+    <Compile Include="Utilities\Interfaces\ISettingsUtility.cs" />
+    <Compile Include="Services\Interfaces\ITorrentService.cs" />
+    <Compile Include="Utilities\RunTime\CredentialUtility.cs" />
+    <Compile Include="Utilities\RunTime\DispatcherUtility.cs" />
+    <Compile Include="Utilities\RunTime\SettingsUtility.cs" />
+    <Compile Include="ViewModels\MoviesViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\MoviesPage.xaml.cs">
+      <DependentUpon>MoviesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\StreamProgressEventArgs.cs" />
+    <Compile Include="Utilities\TorrentStreamManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -122,15 +180,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\MoviesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Torrentino">
-      <HintPath>D:\Libraries\Harold\Downloads\torrex-pro\Torrentino.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Universal.Nat\Universal.Nat\Universal.Nat.csproj">
+      <Project>{4b7c52ae-58d8-4666-9a46-17cada2de40f}</Project>
+      <Name>Universal.Nat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Universal.Torrent\Universal.Torrent.Dht\Universal.Torrent.Dht.csproj">
+      <Project>{4ad036ab-78a6-49c1-8250-f465ce66b181}</Project>
+      <Name>Universal.Torrent.Dht</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Universal.Torrent\Universal.Torrent\Universal.Torrent.csproj">
+      <Project>{3db85b88-9ca0-4daa-8ce1-0ab6e550c9d8}</Project>
+      <Name>Universal.Torrent</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enums\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
