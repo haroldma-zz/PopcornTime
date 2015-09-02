@@ -165,6 +165,7 @@
     <Compile Include="Utilities\RunTime\SettingsUtility.cs" />
     <Compile Include="ViewModels\MoviesViewModel.cs" />
     <Compile Include="ViewModels\MovieViewModel.cs" />
+    <Compile Include="ViewModels\PlayerViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\MoviePage.xaml.cs">
       <DependentUpon>MoviePage.xaml</DependentUpon>

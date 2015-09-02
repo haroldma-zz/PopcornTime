@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using PopcornTime.Common;
 using Universal.Torrent.Client;
 using Universal.Torrent.Client.Args;
@@ -38,10 +39,9 @@ namespace PopcornTime.Utilities
         public event EventHandler StreamReady;
         public event EventHandler<StreamProgressEventArgs> StreamProgress;
 
-        public Task<StorageFile> GetVideoFileAsync()
+        public TorrentFile GetTorrentFileAsync()
         {
-            var torrentFile = _torrentManager.Torrent.Files[_selectedFileIndex];
-            return StorageHelper.GetFileAsync(torrentFile.Path, torrentFile.TargetFolder);
+            return _torrentManager.Torrent.Files[_selectedFileIndex];
         }
 
         public void Pause() => _torrentManager.Pause();
@@ -147,7 +147,7 @@ namespace PopcornTime.Utilities
             OnStreamProgress(_prepareProgress, _torrentManager.Progress, _torrentManager.Peers.Seeds,
                 _torrentManager.Monitor.DownloadSpeed);
 
-            if (CurrentState == State.Starting && _prepareProgress.CompareTo(100) == 0)
+            if (CurrentState == State.Starting && _prepareProgress.CompareTo(100) >= 0)
             {
                 StreamReady?.Invoke(this, EventArgs.Empty);
                 CurrentState = State.Streaming;
