@@ -113,6 +113,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\TorrentHealth.cs" />
     <Compile Include="Enums\VideoQuality.cs" />
     <Compile Include="Enums\Order.cs" />
     <Compile Include="Enums\Sort.cs" />

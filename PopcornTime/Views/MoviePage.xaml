@@ -11,8 +11,94 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="{x:Bind ViewModel.Movie.Images.BackgroundImage, Mode=OneWay}" Stretch="UniformToFill" />
+            <ImageBrush ImageSource="{x:Bind ViewModel.Movie.Images.BackgroundImageOriginal, Mode=OneWay}"
+                        Opacity=".35"
+                        Stretch="UniformToFill" />
         </Grid.Background>
-
+        <Grid Margin="0,75,0,75"
+              Visibility="{x:Bind ViewModel.State, Mode=OneWay, Converter={StaticResource UnknownStateConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width=".5*" MaxWidth="800" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="1" Margin="40,0,20,20" VerticalAlignment="Top"
+                   Source="{x:Bind ViewModel.Movie.Images.LargeCoverImage, Mode=OneWay}" />
+            <Grid Grid.Column="2" Margin="0,0,40,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{x:Bind ViewModel.Movie.Title, Mode=OneWay}"
+                           Style="{StaticResource ExtraLargeHeaderTextBlockStyle}"
+                           FontWeight="SemiBold" TextLineBounds="Tight" />
+                <Grid Grid.Row="1" Margin="0,0,0,10">
+                    <TextBlock Style="{StaticResource SubtleTextBlockStyle}" FontSize="28">
+                        <Run Text="{x:Bind ViewModel.Movie.Year, Mode=OneWay}" />
+                        <Run Text="  •  " />
+                        <Run Text="{x:Bind ViewModel.Movie.Runtime, Mode=OneWay}" />
+                        <Run Text="min" />
+                        <Run Text="  •  " />
+                        <Run
+                            Text="{x:Bind ViewModel.Movie.Genres, Converter={StaticResource ListToTextConverter}, Mode=OneWay}" />
+                        <Run Text="  •  " />
+                        <Run Text="{x:Bind ViewModel.Movie.Rating, Mode=OneWay}" />
+                        <Run Text="/ 10" FontSize="20" />
+                    </TextBlock>
+                    <Ellipse
+                        Fill="{x:Bind ViewModel.Movie.Torrents[0].Health, Mode=OneWay, Converter={StaticResource SeedsToColorConverter}}"
+                        ToolTipService.ToolTip="{x:Bind ViewModel.Movie.Torrents[0].HealthText, Mode=OneWay}"
+                        Width="25" Height="25" HorizontalAlignment="Right" />
+                </Grid>
+                <TextBlock Grid.Row="2" Text="{x:Bind ViewModel.Movie.DescriptionFull, Mode=OneWay}"
+                           TextWrapping="Wrap" FontSize="28" />
+                <Grid Grid.Row="3" VerticalAlignment="Bottom">
+                    <Button Content="Play" Command="{x:Bind ViewModel.PlayCommand}" />
+                </Grid>
+            </Grid>
+        </Grid>
+        <StackPanel VerticalAlignment="Center"
+              Visibility="{x:Bind ViewModel.State, Mode=OneWay, Converter={StaticResource PerparingStateConverter}}">
+            <TextBlock Text="Connecting..." FontSize="28" TextAlignment="Center"
+                           Style="{StaticResource BaseTextBlockStyle}"
+                           FontWeight="SemiBold" TextLineBounds="Tight" Margin="0,0,0,20" />
+            <ProgressBar IsIndeterminate="True" />
+        </StackPanel>
+        <Grid Margin="75"
+              Visibility="{x:Bind ViewModel.State, Mode=OneWay, Converter={StaticResource StartingStateConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".2*" />
+                <ColumnDefinition Width=".6*" MaxWidth="630" />
+                <ColumnDefinition Width=".2*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock Text="{x:Bind ViewModel.Movie.TitleLong, Mode=OneWay}" FontSize="28"
+                           Style="{StaticResource BaseTextBlockStyle}"
+                           FontWeight="SemiBold" TextLineBounds="Tight" TextAlignment="Center" Margin="0,0,0,100" />
+                <TextBlock Text="Starting..." FontSize="28" TextAlignment="Center"
+                           Style="{StaticResource BaseTextBlockStyle}"
+                           FontWeight="SemiBold" TextLineBounds="Tight" Margin="0,0,0,20" />
+                <ProgressBar Value="{x:Bind ViewModel.PrepareProgress, Mode=OneWay}"
+                             Maximum="100" />
+                <Border MaxWidth="300" Background="#7F000000" CornerRadius="5" Margin="0,20,0,0">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Download:" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" TextAlignment="Right" Text="{x:Bind ViewModel.DownloadSpeed, Mode=OneWay}" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Active Peers:" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Right" Text="{x:Bind ViewModel.Peers, Mode=OneWay}" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </navigationService:NavigatablePage>

@@ -12,6 +12,11 @@
 
             <converters:UniformSpacingConverter x:Key="UniformSpacingConverter" />
             <converters:VisibilityConverter x:Key="VisibilityConverter" />
+            <converters:SeedsToColorConverter x:Key="SeedsToColorConverter" />
+            <converters:ListToTextConverter x:Key="ListToTextConverter" Seperator=" / " />
+            <converters:StreamStateConverter x:Key="PerparingStateConverter" State="Preparing" />
+            <converters:StreamStateConverter x:Key="StartingStateConverter" State="Starting" />
+            <converters:StreamStateConverter x:Key="UnknownStateConverter" State="Unknown" />
             
             <SolidColorBrush x:Key="SystemChromeLowBrush" Color="{ThemeResource SystemChromeLowColor}" />
             <SolidColorBrush x:Key="OpaqueSystemChromeLowBrush" Color="{ThemeResource SystemChromeLowColor}" Opacity=".75" />

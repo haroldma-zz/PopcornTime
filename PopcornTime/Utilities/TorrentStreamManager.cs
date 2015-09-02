@@ -10,33 +10,7 @@ using Universal.Torrent.Common;
 
 namespace PopcornTime.Utilities
 {
-    /// <summary>
-    ///     Defines a color in Hue/Saturation/Lightness (HSL) space.
-    /// </summary>
-    public struct HslColor
-    {
-        /// <summary>
-        ///     The Alpha/opacity in 0..1 range.
-        /// </summary>
-        public double A;
-
-        /// <summary>
-        ///     The Hue in 0..360 range.
-        /// </summary>
-        public double H;
-
-        /// <summary>
-        ///     The Lightness in 0..1 range.
-        /// </summary>
-        public double L;
-
-        /// <summary>
-        ///     The Saturation in 0..1 range.
-        /// </summary>
-        public double S;
-    }
-
-    internal class TorrentStreamManager
+    public class TorrentStreamManager
     {
         private const int MaxPrepareCount = 20;
         private const int MinPrepareCount = 2;
@@ -145,7 +119,7 @@ namespace PopcornTime.Utilities
         public void StartDownload()
         {
             if (CurrentState == State.Streaming) return;
-            CurrentState = State.Starting;
+            CurrentState = State.Preparing;
 
             var slidingPicker = new SlidingWindowPicker(new PriorityPicker(new StandardPicker()))
             {
@@ -165,12 +139,15 @@ namespace PopcornTime.Utilities
 
         private void PieceManagerOnBlockReceived(object sender, BlockEventArgs args)
         {
+            if (CurrentState == State.Preparing)
+                CurrentState = State.Starting;
+            
             if (args.Piece.Index >= _firstPieceIndex && args.Piece.Index <= _pieceToPrepare + _firstPieceIndex)
                 _prepareProgress += _progressStep;
             OnStreamProgress(_prepareProgress, _torrentManager.Progress, _torrentManager.Peers.Seeds,
                 _torrentManager.Monitor.DownloadSpeed);
 
-            if ((int) _progressStep == 100)
+            if (CurrentState == State.Starting && _prepareProgress.CompareTo(100) == 0)
             {
                 StreamReady?.Invoke(this, EventArgs.Empty);
                 CurrentState = State.Streaming;
@@ -193,10 +170,10 @@ namespace PopcornTime.Utilities
             StreamProgress?.Invoke(this, new StreamProgressEventArgs(prepareProgress, progress, seeds, downloadSpeed));
         }
 
-        internal enum State
+        public enum State
         {
             Unknown,
-            RetrievingMeta,
+            Preparing,
             Starting,
             Streaming
         }

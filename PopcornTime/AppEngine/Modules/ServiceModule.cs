@@ -19,6 +19,7 @@ namespace PopcornTime.AppEngine.Modules
         {
             builder.RegisterType<InsightsService>().As<IInsightsService>();
             builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+            builder.RegisterType<TorrentStreamService>().As<ITorrentStreamService>().SingleInstance();
         }
     }
 }

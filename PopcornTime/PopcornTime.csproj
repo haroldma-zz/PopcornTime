@@ -133,7 +133,7 @@
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Services\DesignTime\DesignInsightsService.cs" />
     <Compile Include="Services\Interfaces\IInsightsService.cs" />
-    <Compile Include="Services\RunTime\TorrentService.cs" />
+    <Compile Include="Services\RunTime\TorrentStreamService.cs" />
     <Compile Include="Services\NavigationService\DesignNavigationService.cs" />
     <Compile Include="Services\NavigationService\INavigatable.cs" />
     <Compile Include="Services\NavigationService\INavigationService.cs" />
@@ -145,6 +145,9 @@
       <DependentUpon>YtsTemplates.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tools\ActualSizeProxy.cs" />
+    <Compile Include="Tools\Converters\ListToTextConverter.cs" />
+    <Compile Include="Tools\Converters\SeedsToColorConverter.cs" />
+    <Compile Include="Tools\Converters\StreamStateConverter.cs" />
     <Compile Include="Tools\Converters\UniformSpacingConverter.cs" />
     <Compile Include="Tools\Mvvm\Command.cs" />
     <Compile Include="Tools\Mvvm\ViewModelBase.cs" />
@@ -156,7 +159,7 @@
     <Compile Include="Utilities\Interfaces\ICredentialUtility.cs" />
     <Compile Include="Utilities\Interfaces\IDispatcherUtility.cs" />
     <Compile Include="Utilities\Interfaces\ISettingsUtility.cs" />
-    <Compile Include="Services\Interfaces\ITorrentService.cs" />
+    <Compile Include="Services\Interfaces\ITorrentStreamService.cs" />
     <Compile Include="Utilities\RunTime\CredentialUtility.cs" />
     <Compile Include="Utilities\RunTime\DispatcherUtility.cs" />
     <Compile Include="Utilities\RunTime\SettingsUtility.cs" />
@@ -172,6 +175,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\StreamProgressEventArgs.cs" />
     <Compile Include="Utilities\TorrentStreamManager.cs" />
+    <Compile Include="Views\PlayerPage.xaml.cs">
+      <DependentUpon>PlayerPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -209,6 +215,10 @@
     <Page Include="Views\MoviesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PlayerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

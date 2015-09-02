@@ -9,6 +9,9 @@ namespace PopcornTime.Web.Models
         [JsonProperty("background_image")]
         public string BackgroundImage { get; set; }
 
+        [JsonIgnore]
+        public string BackgroundImageOriginal => BackgroundImage.Replace("background.jpg", "background_original.jpg");
+
         [JsonProperty("small_cover_image")]
         public string SmallCoverImage { get; set; }
 

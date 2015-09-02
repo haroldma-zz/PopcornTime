@@ -2,7 +2,7 @@ using System;
 
 namespace PopcornTime.Common
 {
-    internal class StreamProgressEventArgs : EventArgs
+    public class StreamProgressEventArgs : EventArgs
     {
         public StreamProgressEventArgs(double prepareProgress, double progress, int seeds, double downloadSpeed)
         {
