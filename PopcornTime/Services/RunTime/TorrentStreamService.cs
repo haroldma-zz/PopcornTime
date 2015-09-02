@@ -22,6 +22,20 @@ namespace PopcornTime.Services.RunTime
             StreamManager = new TorrentStreamManager(manager);
         }
 
+        public async void Stop()
+        {
+            var managerCopy = StreamManager;
+            StreamManager.TorrentManager.TorrentStateChanged += (sender, args) =>
+            {
+                if (args.NewState == TorrentState.Stopped)
+                    _engine.Unregister(managerCopy.TorrentManager);
+            };
+            StreamManager.Dispose();
+            var torrentsFolder = _engine.Settings.SaveFolder;
+            await StorageHelper.DeleteFolderContentAsync(torrentsFolder);
+            StreamManager = null;
+        }
+
         public TorrentStreamManager StreamManager { get; set; }
     }
 }

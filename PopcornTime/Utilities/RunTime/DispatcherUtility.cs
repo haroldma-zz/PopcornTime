@@ -22,6 +22,13 @@ namespace PopcornTime.Utilities.RunTime
                 _coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, new DispatchedHandler(action)).AsTask().Wait();
         }
 
+        public T Run<T>(Func<T> func)
+        {
+            var obj = default(T);
+            Run(() => { obj = func(); });
+            return obj;
+        }
+
         public Task RunAsync(Action action)
         {
             if (_coreDispatcher.HasThreadAccess)

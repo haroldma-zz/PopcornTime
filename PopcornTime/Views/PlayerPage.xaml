@@ -8,6 +8,6 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <MediaElement x:Name="MediaElement" AreTransportControlsEnabled="True" />
+        <MediaElement x:Name="MediaElement" AreTransportControlsEnabled="True" MediaEnded="MediaElement_MediaEnded" />
     </Grid>
 </Page>

@@ -143,12 +143,13 @@ namespace PopcornTime.Services.NavigationService
         private void NavigatedFrom(bool suspending)
         {
             var page = _frame.Content as FrameworkElement;
-            if (page == null) return;
-            var dataContext = page.DataContext as INavigatable;
+            var dataContext = page?.DataContext as INavigatable;
+            if (dataContext == null) return;
 
-            if (_sessions.ContainsKey(dataContext?.PageKey))
-                dataContext?.OnSaveState(suspending, _sessions[dataContext.PageKey]);
-            dataContext?.OnNavigatedFrom();
+            Dictionary<string, object> state;
+            if (_sessions.TryGetValue(dataContext.PageKey, out state))
+                dataContext.OnSaveState(suspending, state);
+            dataContext.OnNavigatedFrom();
         }
     }
 

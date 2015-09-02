@@ -11,6 +11,11 @@ namespace PopcornTime.Utilities.DesignTime
             
         }
 
+        public T Run<T>(Func<T> func)
+        {
+            return default(T);
+        }
+
         public Task RunAsync(Action action)
         {
             return Task.FromResult(0);

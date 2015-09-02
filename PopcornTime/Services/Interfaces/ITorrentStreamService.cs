@@ -7,5 +7,6 @@ namespace PopcornTime.Services.Interfaces
     {
         TorrentStreamManager StreamManager { get; }
         void CreateManager(Torrent torrent);
+        void Stop();
     }
 }

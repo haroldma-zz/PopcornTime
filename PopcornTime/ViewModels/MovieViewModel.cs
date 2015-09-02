@@ -131,5 +131,15 @@ namespace PopcornTime.ViewModels
         {
             state["movie"] = Movie;
         }
+
+        public override void OnNavigatedFrom()
+        {
+            if (_torrentStreamService.StreamManager != null 
+                && (_torrentStreamService.StreamManager.CurrentState == TorrentStreamManager.State.Preparing || _torrentStreamService.StreamManager.CurrentState == TorrentStreamManager.State.Starting))
+            {
+                // user aborted
+                _torrentStreamService.Stop();
+            }
+        }
     }
 }

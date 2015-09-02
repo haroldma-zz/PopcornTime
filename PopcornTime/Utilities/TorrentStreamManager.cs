@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.Storage.Streams;
 using PopcornTime.Common;
 using Universal.Torrent.Client;
 using Universal.Torrent.Client.Args;
@@ -11,45 +8,59 @@ using Universal.Torrent.Common;
 
 namespace PopcornTime.Utilities
 {
-    public class TorrentStreamManager
+    public class TorrentStreamManager : IDisposable
     {
+        public enum State
+        {
+            Unknown,
+            Preparing,
+            Starting,
+            Streaming
+        }
+
         private const int MaxPrepareCount = 20;
         private const int MinPrepareCount = 2;
-        private const int DefaultPrepareCount = 5;
+        public const int DefaultPrepareCount = 5;
         private readonly long _prepareSize;
-        private readonly TorrentManager _torrentManager;
         private int _firstPieceIndex;
         private int _lastPieceIndex;
         private int _pieceToPrepare;
         private double _prepareProgress;
         private double _progressStep;
         private long _selectedFileIndex;
-        
+
         public TorrentStreamManager(TorrentManager torrentManager, long prepareSize = 10*1024L*1024L)
         {
-            _torrentManager = torrentManager;
+            TorrentManager = torrentManager;
             _prepareSize = prepareSize;
-            
+
             // Select the largest file
             SetSelectedFile(-1);
         }
 
+        public TorrentManager TorrentManager { get; }
+        public SlidingWindowPicker SlidingPicker { get; private set; }
+
         public State CurrentState { get; set; }
+
+        public TorrentFile TorrentVideoFile => TorrentManager.Torrent.Files[_selectedFileIndex];
+        public Torrent Torrent => TorrentManager.Torrent;
+
+        public void Dispose()
+        {
+            TorrentManager.Stop();
+            CurrentState = State.Unknown;
+        }
 
         public event EventHandler StreamReady;
         public event EventHandler<StreamProgressEventArgs> StreamProgress;
 
-        public TorrentFile GetTorrentFileAsync()
-        {
-            return _torrentManager.Torrent.Files[_selectedFileIndex];
-        }
-
-        public void Pause() => _torrentManager.Pause();
-        public void Resume() => _torrentManager.Start();
+        public void Pause() => TorrentManager.Pause();
+        public void Resume() => TorrentManager.Start();
 
         public void SetSelectedFile(int selectedFileIndex)
         {
-            var files = _torrentManager.Torrent.Files;
+            var files = TorrentManager.Torrent.Files;
 
             if (selectedFileIndex == -1)
             {
@@ -83,11 +94,11 @@ namespace PopcornTime.Utilities
             }
             _selectedFileIndex = selectedFileIndex;
 
-            var firstPieceIndex = _torrentManager.Torrent.Files[_selectedFileIndex].StartPieceIndex;
-            var lastPieceIndex = _torrentManager.Torrent.Files[_selectedFileIndex].EndPieceIndex;
+            var firstPieceIndex = TorrentManager.Torrent.Files[_selectedFileIndex].StartPieceIndex;
+            var lastPieceIndex = TorrentManager.Torrent.Files[_selectedFileIndex].EndPieceIndex;
 
             var pieceCount = lastPieceIndex - firstPieceIndex + 1;
-            var pieceLength = _torrentManager.Torrent.PieceLength;
+            var pieceLength = TorrentManager.Torrent.PieceLength;
             int activePieceCount;
             if (pieceLength > 0)
             {
@@ -121,20 +132,20 @@ namespace PopcornTime.Utilities
             if (CurrentState == State.Streaming) return;
             CurrentState = State.Preparing;
 
-            var slidingPicker = new SlidingWindowPicker(new PriorityPicker(new StandardPicker()))
+            SlidingPicker = new SlidingWindowPicker(new PriorityPicker(new StandardPicker()))
             {
                 HighPrioritySetStart = _firstPieceIndex,
                 HighPrioritySetSize = _pieceToPrepare + _firstPieceIndex
             };
-            _torrentManager.ChangePicker(slidingPicker);
-            _torrentManager.PieceManager.BlockReceived -= PieceManagerOnBlockReceived;
-            _torrentManager.PieceManager.BlockReceived += PieceManagerOnBlockReceived;
+            TorrentManager.ChangePicker(SlidingPicker);
+            TorrentManager.PieceManager.BlockReceived -= PieceManagerOnBlockReceived;
+            TorrentManager.PieceManager.BlockReceived += PieceManagerOnBlockReceived;
 
-            var blockCount = _pieceToPrepare*_torrentManager.Torrent.PieceLength/
+            var blockCount = _pieceToPrepare*TorrentManager.Torrent.PieceLength/
                              (double) Piece.BlockSize;
             _progressStep = 100/blockCount;
-
-            _torrentManager.Start();
+            
+            TorrentManager.Start();
         }
 
         private void PieceManagerOnBlockReceived(object sender, BlockEventArgs args)
@@ -144,38 +155,21 @@ namespace PopcornTime.Utilities
             
             if (args.Piece.Index >= _firstPieceIndex && args.Piece.Index <= _pieceToPrepare + _firstPieceIndex)
                 _prepareProgress += _progressStep;
-            OnStreamProgress(_prepareProgress, _torrentManager.Progress, _torrentManager.Peers.Seeds,
-                _torrentManager.Monitor.DownloadSpeed);
+          
 
+            OnStreamProgress(_prepareProgress, TorrentManager.Progress, TorrentManager.Peers.Seeds,
+                TorrentManager.Monitor.DownloadSpeed);
+            
             if (CurrentState == State.Starting && _prepareProgress.CompareTo(100) >= 0)
             {
-                StreamReady?.Invoke(this, EventArgs.Empty);
                 CurrentState = State.Streaming;
+                StreamReady?.Invoke(this, EventArgs.Empty);
             }
-
-            /* // Check if the piece finished downloading
-            if (!args.Piece.AllBlocksReceived || _prepareProgress < 100) return;
-
-            // update high priority
-            var slidingPicker = new SlidingWindowPicker(new StandardPicker())
-            {
-                HighPrioritySetStart = args.Piece.Index,
-                HighPrioritySetSize = _pieceToPrepare + args.Piece.Index
-            };
-            _torrentManager.ChangePicker(slidingPicker);*/
         }
 
         protected virtual void OnStreamProgress(double prepareProgress, double progress, int seeds, double downloadSpeed)
         {
             StreamProgress?.Invoke(this, new StreamProgressEventArgs(prepareProgress, progress, seeds, downloadSpeed));
-        }
-
-        public enum State
-        {
-            Unknown,
-            Preparing,
-            Starting,
-            Streaming
         }
     }
 }
