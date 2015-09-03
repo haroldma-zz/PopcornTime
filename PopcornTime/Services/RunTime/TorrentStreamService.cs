@@ -1,3 +1,4 @@
+using System.IO;
 using PopcornTime.Extensions;
 using PopcornTime.Services.Interfaces;
 using PopcornTime.Utilities;
@@ -22,17 +23,18 @@ namespace PopcornTime.Services.RunTime
             StreamManager = new TorrentStreamManager(manager);
         }
 
-        public async void Stop()
+        public void Stop()
         {
             var managerCopy = StreamManager;
             StreamManager.TorrentManager.TorrentStateChanged += (sender, args) =>
             {
                 if (args.NewState == TorrentState.Stopped)
+                {
                     _engine.Unregister(managerCopy.TorrentManager);
+                    File.Delete(Path.Combine(managerCopy.TorrentVideoFile.TargetFolder.Path, managerCopy.TorrentVideoFile.Path));
+                }
             };
             StreamManager.Dispose();
-            var torrentsFolder = _engine.Settings.SaveFolder;
-            await StorageHelper.DeleteFolderContentAsync(torrentsFolder);
             StreamManager = null;
         }
 
