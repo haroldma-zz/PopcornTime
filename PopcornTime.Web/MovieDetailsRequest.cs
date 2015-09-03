@@ -7,7 +7,7 @@ namespace PopcornTime.Web
     /// <summary>
     ///     Returns the information about a specific movie.
     /// </summary>
-    public class MovieDetailsRequest : RestObject<YtsResponse<YtsMovieFull>>
+    public class MovieDetailsRequest : RestRequestObject<YtsResponse<YtsMovieFull>>
     {
         public MovieDetailsRequest(uint movieId)
         {

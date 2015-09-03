@@ -127,19 +127,21 @@
     <Compile Include="Models\YtsMovieFull.cs" />
     <Compile Include="Models\YtsMoviePartial.cs" />
     <Compile Include="Models\YtsMovieListData.cs" />
+    <Compile Include="Models\YtsMovieSuggestionData.cs" />
+    <Compile Include="Models\YtsParentalGuide.cs" />
+    <Compile Include="Models\YtsParentalGuidesData.cs" />
     <Compile Include="Models\YtsResponse.cs" />
     <Compile Include="Enums\ResponseStatus.cs" />
+    <Compile Include="Models\YtsReview.cs" />
+    <Compile Include="Models\YtsReviewsData.cs" />
     <Compile Include="Models\YtsTorrent.cs" />
     <Compile Include="MovieDetailsRequest.cs" />
+    <Compile Include="MovieReviewsRequest.cs" />
+    <Compile Include="MovieSuggestionsRequest.cs" />
+    <Compile Include="ParentalGuidesRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ListMoviesRequest.cs" />
     <Content Include="Properties\PopcornTime.Web.rd.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Universal.FluentRest\Universal.FluentRest\Universal.FluentRest.csproj">
-      <Project>{4e4a941c-597d-4a34-8fc7-51452db2437c}</Project>
-      <Name>Universal.FluentRest</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

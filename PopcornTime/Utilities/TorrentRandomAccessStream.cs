@@ -29,10 +29,7 @@ namespace PopcornTime.Utilities
             _internalStream = stream.AsRandomAccessStream();
         }
 
-        public void Dispose()
-        {
-            _internalStream.Dispose();
-        }
+        public void Dispose() => _internalStream.Dispose();
 
         public IAsyncOperationWithProgress<IBuffer, uint> ReadAsync(IBuffer buffer, uint count,
             InputStreamOptions options)

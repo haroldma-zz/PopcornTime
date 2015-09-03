@@ -10,7 +10,7 @@ namespace PopcornTime.Web
     /// <summary>
     ///     Used to list and search through out all the available movies. Can sort, filter, search and order the results.
     /// </summary>
-    public class ListMoviesRequest : RestObject<YtsResponse<YtsMovieListData>>
+    public class ListMoviesRequest : RestRequestObject<YtsResponse<YtsMovieListData>>
     {
         public ListMoviesRequest()
         {
