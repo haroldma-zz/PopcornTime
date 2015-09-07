@@ -11,7 +11,8 @@ namespace PopcornTime.Tools.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var health = (TorrentHealth) value;
+            var health = value as TorrentHealth?;
+            if (health == null) return null;
             Color color;
 
             switch (health)

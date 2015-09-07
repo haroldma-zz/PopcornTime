@@ -6,6 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigationService="using:PopcornTime.Services.NavigationService"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     DataContext="{Binding Movie, Mode=OneTime, Source={StaticResource ViewModelLocator}}">
 
@@ -17,15 +19,18 @@
                             Opacity=".35"
                             Stretch="UniformToFill" />
             </Grid.Background>
-            <Grid Margin="0,75,0,75">
+            <Grid x:Name="ContentGrid" Margin="0,75,0,75">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width=".5*" MaxWidth="800" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Column="1" Margin="40,0,20,20" VerticalAlignment="Top"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image Margin="40,0,20,20" VerticalAlignment="Top"
                        Source="{x:Bind ViewModel.Movie.Images.LargeCoverImage, Mode=OneWay}" />
-                <Grid Grid.Column="2" Margin="0,0,40,0">
+                <Grid x:Name="MetadataGrid" Grid.Row="0" Grid.Column="1" Margin="40,0,40,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -33,10 +38,11 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock Text="{x:Bind ViewModel.Movie.Title, Mode=OneWay}"
-                               Style="{StaticResource ExtraLargeHeaderTextBlockStyle}"
+                               Style="{StaticResource LargeHeaderTextBlockStyle}"
                                FontWeight="SemiBold" TextLineBounds="Tight" />
                     <Grid Grid.Row="1" Margin="0,0,0,10">
-                        <TextBlock Style="{StaticResource SubtleTextBlockStyle}" FontSize="28">
+                        <TextBlock Style="{StaticResource SubtleTextBlockStyle}"
+                                   FontSize="{ThemeResource TextStyleLargeFontSize}">
                             <Run Text="{x:Bind ViewModel.Movie.Year, Mode=OneWay}" />
                             <Run Text="  •  " />
                             <Run Text="{x:Bind ViewModel.Movie.Runtime, Mode=OneWay}" />
@@ -46,20 +52,51 @@
                                 Text="{x:Bind ViewModel.Movie.Genres, Converter={StaticResource ListToTextConverter}, Mode=OneWay}" />
                             <Run Text="  •  " />
                             <Run Text="{x:Bind ViewModel.Movie.Rating, Mode=OneWay}" />
-                            <Run Text="/ 10" FontSize="20" />
+                            <Run Text="/ 10" />
                         </TextBlock>
                         <Ellipse
-                            Fill="{x:Bind ViewModel.Movie.Torrents[0].Health, Mode=OneWay, Converter={StaticResource SeedsToColorConverter}}"
-                            ToolTipService.ToolTip="{x:Bind ViewModel.Movie.Torrents[0].HealthText, Mode=OneWay}"
-                            Width="25" Height="25" HorizontalAlignment="Right" />
+                            Fill="{x:Bind ViewModel.SelectedTorrent.Health, Mode=OneWay, Converter={StaticResource SeedsToColorConverter}}"
+                            ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.HealthText, Mode=OneWay}"
+                            Width="20" Height="20" HorizontalAlignment="Right" />
                     </Grid>
                     <TextBlock Grid.Row="2" Text="{x:Bind ViewModel.Movie.DescriptionFull, Mode=OneWay}"
-                               TextWrapping="Wrap" FontSize="28" />
-                    <Grid Grid.Row="3" VerticalAlignment="Bottom">
-                        <Button Content="Play" Command="{x:Bind ViewModel.PlayCommand}" />
-                    </Grid>
+                               TextWrapping="Wrap" FontSize="{ThemeResource TextStyleLargeFontSize}" />
+                    <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,20,0,0" VerticalAlignment="Bottom">
+                        <Button Margin="0,0,10,0" Content="Watch Now" Command="{x:Bind ViewModel.PlayCommand}" />
+                        <Button Margin="0,0,10,0" Content="Watch Trailer" Command="{x:Bind ViewModel.PlayCommand}" />
+                        <ToggleSwitch OnContent="1080p" OffContent="720p" 
+                                      IsOn="{x:Bind ViewModel.Is1080, Mode=TwoWay}"
+                                      ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.Size, Mode=OneWay}"
+                                      IsEnabled="{x:Bind ViewModel.IsQualityToggleEnabled, Mode=OneWay}">
+                            <interactivity:Interaction.Behaviors>
+                                <core:EventTriggerBehavior EventName="Toggled">
+                                    <core:InvokeCommandAction Command="{x:Bind ViewModel.QualityToggledCommand}" />
+                                </core:EventTriggerBehavior>
+                            </interactivity:Interaction.Behaviors>
+                        </ToggleSwitch>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowSizeStates">
+                <VisualState x:Name="NarrowScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MetadataGrid.(Grid.Row)" Value="1" />
+                        <Setter Target="MetadataGrid.(Grid.Column)" Value="0" />
+                        <Setter Target="ContentGrid.ColumnDefinitions[1].Width" Value="0" />
+                        <Setter Target="ContentGrid.ColumnDefinitions[0].Width" Value="*" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="WideScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="600" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </ScrollViewer>
 </navigationService:NavigatablePage>

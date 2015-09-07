@@ -6,6 +6,7 @@ using PopcornTime.Common;
 using PopcornTime.Tools.Mvvm;
 using PopcornTime.Views;
 using PopcornTime.Web;
+using PopcornTime.Web.Enums;
 using PopcornTime.Web.Models;
 
 namespace PopcornTime.ViewModels
@@ -13,17 +14,23 @@ namespace PopcornTime.ViewModels
     public class MovieViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
+        private bool _is1080;
         private bool _isLoading;
+        private bool _isQualityToggleEnabled;
         private YtsMovieFull _movie;
+        private YtsTorrent _selectedTorrent;
 
         public MovieViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
 
             PlayCommand = new Command(PlayExecute);
+            QualityToggledCommand = new Command(QualityToggledExecute);
         }
 
-        public Command PlayCommand { get; set; }
+        public Command QualityToggledCommand { get; }
+
+        public Command PlayCommand { get; }
 
         public YtsMovieFull Movie
         {
@@ -37,12 +44,38 @@ namespace PopcornTime.ViewModels
             set { Set(ref _isLoading, value); }
         }
 
+        public YtsTorrent SelectedTorrent
+        {
+            get { return _selectedTorrent; }
+            set { Set(ref _selectedTorrent, value); }
+        }
+
+        public bool Is1080
+        {
+            get { return _is1080; }
+            set { Set(ref _is1080, value); }
+        }
+
+        public bool IsQualityToggleEnabled
+        {
+            get { return _isQualityToggleEnabled; }
+            set { Set(ref _isQualityToggleEnabled, value); }
+        }
+
+        private void QualityToggledExecute()
+        {
+            // Is1080 will have previous state, event called before the binding updates
+            SelectedTorrent = Movie.Torrents.FirstOrDefault(p => p.Quality == (!Is1080
+                ? VideoQuality.Q1080
+                : VideoQuality.Q720));
+        }
+
         private void PlayExecute()
         {
             _navigationService.Navigate(typeof (StartingPage), new PlaybackTorrent
             {
                 Title = Movie.TitleLong,
-                TorrentUrl = Movie.Torrents.OrderByDescending(p => p.Quality).FirstOrDefault().Url,
+                TorrentUrl = SelectedTorrent.Url,
                 BackgroundImageUrl = Movie.Images.BackgroundImageOriginal
             });
         }
@@ -66,6 +99,20 @@ namespace PopcornTime.ViewModels
                     CurtainPrompt.ShowError(response.DeserializedResponse?.StatusMessage ??
                                             "Problem loading movie details.");
                 }
+            }
+
+            if (Movie != null)
+            {
+                var high = Movie.Torrents.FirstOrDefault(p => p.Quality == VideoQuality.Q1080);
+                var low = Movie.Torrents.FirstOrDefault(p => p.Quality == VideoQuality.Q720);
+                if (high != null)
+                {
+                    Is1080 = true;
+                    IsQualityToggleEnabled = low != null;
+                    SelectedTorrent = high;
+                }
+                else
+                    SelectedTorrent = low;
             }
         }
 

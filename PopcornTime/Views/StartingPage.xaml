@@ -23,14 +23,9 @@
                            FontWeight="SemiBold" TextLineBounds="Tight" Margin="0,0,0,20" />
             <ProgressBar IsIndeterminate="True" />
         </StackPanel>
-        <Grid Margin="10"
+        <Grid Margin="40,10" MaxWidth="630" VerticalAlignment="Center"
               Visibility="{x:Bind ViewModel.State, Mode=OneWay, Converter={StaticResource StartingStateConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width=".2*" />
-                <ColumnDefinition Width=".6*" MaxWidth="630" />
-                <ColumnDefinition Width=".2*" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <StackPanel VerticalAlignment="Center">
                 <TextBlock Text="{x:Bind ViewModel.PlaybackTorrent.Title, Mode=OneWay}" FontSize="28"
                            Style="{StaticResource BaseTextBlockStyle}"
                            FontWeight="SemiBold" TextLineBounds="Tight" TextAlignment="Center" Margin="0,0,0,100" />
