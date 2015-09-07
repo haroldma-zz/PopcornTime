@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Windows.System;
 using Windows.UI.Xaml.Navigation;
 using Audiotica.Windows.Services.NavigationService;
 using PopcornTime.Common;
@@ -25,8 +27,16 @@ namespace PopcornTime.ViewModels
             _navigationService = navigationService;
 
             PlayCommand = new Command(PlayExecute);
+            TrailerCommand = new Command(TrailerExecute);
             QualityToggledCommand = new Command(QualityToggledExecute);
         }
+
+        private async void TrailerExecute()
+        {
+            await Launcher.LaunchUriAsync(new Uri($"https://youtu.be/{Movie.YoutubeTrailerCode}"));
+        }
+
+        public Command TrailerCommand { get; }
 
         public Command QualityToggledCommand { get; }
 

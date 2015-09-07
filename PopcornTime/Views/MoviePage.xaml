@@ -63,7 +63,7 @@
                                TextWrapping="Wrap" FontSize="{ThemeResource TextStyleLargeFontSize}" />
                     <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,20,0,0" VerticalAlignment="Bottom">
                         <Button Margin="0,0,10,0" Content="Watch Now" Command="{x:Bind ViewModel.PlayCommand}" />
-                        <Button Margin="0,0,10,0" Content="Watch Trailer" Command="{x:Bind ViewModel.PlayCommand}" />
+                        <Button Margin="0,0,10,0" Content="Watch Trailer" Command="{x:Bind ViewModel.TrailerCommand}" />
                         <ToggleSwitch OnContent="1080p" OffContent="720p" 
                                       IsOn="{x:Bind ViewModel.Is1080, Mode=TwoWay}"
                                       ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.Size, Mode=OneWay}"
