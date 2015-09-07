@@ -166,6 +166,7 @@
     <Compile Include="Utilities\TorrentRandomAccessStream.cs" />
     <Compile Include="ViewModels\MoviesViewModel.cs" />
     <Compile Include="ViewModels\MovieViewModel.cs" />
+    <Compile Include="ViewModels\StartingViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\MoviePage.xaml.cs">
       <DependentUpon>MoviePage.xaml</DependentUpon>
@@ -178,6 +179,9 @@
     <Compile Include="Utilities\TorrentStreamManager.cs" />
     <Compile Include="Views\PlayerPage.xaml.cs">
       <DependentUpon>PlayerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartingPage.xaml.cs">
+      <DependentUpon>StartingPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -230,10 +234,6 @@
     <ProjectReference Include="..\PopcornTime.Web\PopcornTime.Web.csproj">
       <Project>{1165a830-5d7f-406e-b638-070c8ba8dcfd}</Project>
       <Name>PopcornTime.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Universal.FluentRest\Universal.FluentRest\Universal.FluentRest.csproj">
-      <Project>{4e4a941c-597d-4a34-8fc7-51452db2437c}</Project>
-      <Name>Universal.FluentRest</Name>
     </ProjectReference>
     <ProjectReference Include="..\Universal.Nat\Universal.Nat\Universal.Nat.csproj">
       <Project>{4b7c52ae-58d8-4666-9a46-17cada2de40f}</Project>

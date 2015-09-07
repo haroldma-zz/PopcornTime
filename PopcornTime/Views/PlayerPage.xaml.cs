@@ -17,6 +17,7 @@ namespace PopcornTime.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
             var streamService = App.Current.Kernel.Resolve<ITorrentStreamService>();
 
             if (streamService.StreamManager == null ||

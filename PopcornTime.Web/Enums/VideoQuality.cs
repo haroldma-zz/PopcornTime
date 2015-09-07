@@ -2,8 +2,8 @@
 {
     public enum VideoQuality
     {
+        Q3D,
         Q720,
-        Q1080,
-        Q3D
+        Q1080
     }
 }

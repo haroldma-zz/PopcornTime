@@ -25,6 +25,7 @@ namespace PopcornTime.Services.NavigationService
         private readonly NavigationFacade _frame;
         private readonly IInsightsService _insightsService;
         private readonly ISettingsUtility _settingsUtility;
+        private bool _keepOnBackstack = true;
 
         private Dictionary<string, Dictionary<string, object>> _sessions =
             new Dictionary<string, Dictionary<string, object>>();
@@ -51,6 +52,13 @@ namespace PopcornTime.Services.NavigationService
                 ? AppViewBackButtonVisibility.Visible
                 : AppViewBackButtonVisibility.Collapsed;
 
+            if (!_keepOnBackstack)
+            {
+                if (mode == NavigationMode.New)
+                    _frame.BackStack.RemoveAt(_frame.BackStackDepth - 1);
+                _keepOnBackstack = true;
+            }
+
             _frame.CurrentPageParam = parameter;
             _frame.CurrentPageType = _frame.Content.GetType();
 
@@ -59,6 +67,7 @@ namespace PopcornTime.Services.NavigationService
 
             if (dataContext != null)
             {
+                _keepOnBackstack = dataContext.KeepOnBackstack;
                 var deserializedParameter = parameter.TryDeserializeJsonWithTypeInfo();
                 _insightsService.TrackPageView(CurrentPageType.Name,
                     dataContext.SimplifiedParameter(deserializedParameter));

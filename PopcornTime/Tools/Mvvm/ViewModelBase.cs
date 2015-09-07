@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml.Navigation;
-using Audiotica.Windows.Services.NavigationService;
 using PopcornTime.Common;
+using PopcornTime.Services.NavigationService;
 
 namespace PopcornTime.Tools.Mvvm
 {
     public abstract class ViewModelBase : ObservableObject, INavigatable
     {
         public bool IsInDesignMode => DesignMode.DesignModeEnabled;
+        public virtual bool KeepOnBackstack { get; } = true;
         public string PageKey { get; set; }
 
         public virtual void OnNavigatedTo(object parameter, NavigationMode mode, Dictionary<string, object> state)
