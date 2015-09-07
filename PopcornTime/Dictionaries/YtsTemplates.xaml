@@ -6,7 +6,7 @@
     xmlns:common="using:PopcornTime.Common">
 
     <DataTemplate x:Key="YtsMovieTemplate" x:DataType="models:YtsMoviePartial">
-        <Grid Margin="10" Width="190" >
+        <Grid Margin="5" Width="140" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -14,15 +14,15 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Border CornerRadius="5" Height="281"
+                <Border CornerRadius="5" Height="207"
                     Background="{ThemeResource SystemControlBackgroundAccentBrush}" />
 
-                <Border Grid.Row="0" CornerRadius="5" Height="281">
+                <Border Grid.Row="0" CornerRadius="5" Height="207">
                     <Border.Background>
                         <ImageBrush ImageSource="{x:Bind MediumCoverImage}" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
-                <common:ContentOnHoverControl Width="190" Height="281" Grid.Row="0">
+                <common:ContentOnHoverControl Width="140" Height="207" Grid.Row="0">
                     <Border CornerRadius="5" BorderThickness="2" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
                     Background="{ThemeResource OpaqueSystemChromeLowBrush}">
                         <Grid Margin="5">

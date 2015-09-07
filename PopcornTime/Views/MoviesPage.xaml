@@ -17,7 +17,7 @@
         <Grid.Resources>
             <tools:ActualSizePropertyProxy Element="{Binding ElementName=ItemsWrapGrid}" x:Name="Proxy" />
         </Grid.Resources>
-        <common:BetterGridView 
+        <common:BetterGridView  Padding="0,20,0,0"
             VerticalOffset="{x:Bind ViewModel.VerticalOffset, Mode=TwoWay}"
             SelectionMode="None" 
             IsItemClickEnabled="True" 
@@ -30,7 +30,7 @@
             </interactivity:Interaction.Behaviors>
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid x:Name="ItemsWrapGrid" ItemWidth="{Binding ActualWidthValue, Source={StaticResource Proxy}, Converter={StaticResource UniformSpacingConverter}, ConverterParameter=210}" Orientation="Horizontal"/>
+                    <ItemsWrapGrid x:Name="ItemsWrapGrid" ItemWidth="{Binding ActualWidthValue, Source={StaticResource Proxy}, Converter={StaticResource UniformSpacingConverter}, ConverterParameter=160}" Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
         </common:BetterGridView>

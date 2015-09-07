@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Audiotica.Core.Windows.Helpers;
 
 namespace PopcornTime.Common
 {
@@ -13,6 +13,7 @@ namespace PopcornTime.Common
         {
             VisualStateManager.GoToState(this, "Normal", true);
             base.OnApplyTemplate();
+            if (DeviceHelper.IsType(DeviceFamily.Mobile)) return;
             PointerEntered += OnPointerEntered;
             PointerExited += OnPointerExited;
         }

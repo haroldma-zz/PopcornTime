@@ -12,14 +12,14 @@
     DataContext="{Binding Movie, Mode=OneTime, Source={StaticResource ViewModelLocator}}">
 
     <ScrollViewer>
-        <Grid>
-            <Grid.Background>
-                <ImageBrush AlignmentY="Center" AlignmentX="Center"
+        <ScrollViewer.Background>
+            <ImageBrush AlignmentY="Center" AlignmentX="Center"
                             ImageSource="{x:Bind ViewModel.Movie.Images.BackgroundImageOriginal, Mode=OneWay}"
                             Opacity=".35"
                             Stretch="UniformToFill" />
-            </Grid.Background>
-            <Grid x:Name="ContentGrid" Margin="0,75,0,75">
+        </ScrollViewer.Background>
+        <Grid>
+            <Grid x:Name="ContentGrid" Margin="40,75,40,75">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" MaxWidth="800" />
                     <ColumnDefinition Width="*" />
@@ -28,21 +28,32 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Image Margin="40,0,20,20" VerticalAlignment="Top"
+                <Image x:Name="PosterImage" Margin="0,0,20,0" VerticalAlignment="Top"
                        Source="{x:Bind ViewModel.Movie.Images.LargeCoverImage, Mode=OneWay}" />
-                <Grid x:Name="MetadataGrid" Grid.Row="0" Grid.Column="1" Margin="40,0,40,0">
+                <Grid x:Name="MetadataGrid" Grid.Row="0" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{x:Bind ViewModel.Movie.Title, Mode=OneWay}"
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind ViewModel.Movie.Title, Mode=OneWay}"
                                Style="{StaticResource LargeHeaderTextBlockStyle}"
-                               FontWeight="SemiBold" TextLineBounds="Tight" />
-                    <Grid Grid.Row="1" Margin="0,0,0,10">
-                        <TextBlock Style="{StaticResource SubtleTextBlockStyle}"
-                                   FontSize="{ThemeResource TextStyleLargeFontSize}">
+                               FontWeight="SemiBold" TextLineBounds="TrimToCapHeight"  TextWrapping="Wrap" />
+                        <Ellipse VerticalAlignment="Top"
+                            Grid.Column="1"
+                            Fill="{x:Bind ViewModel.SelectedTorrent.Health, Mode=OneWay, Converter={StaticResource SeedsToColorConverter}}"
+                            ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.HealthText, Mode=OneWay}"
+                            Width="20" Height="20" />
+                    </Grid>
+                    <TextBlock  Grid.Row="1" Margin="0,0,0,10" Style="{StaticResource SubtleTextBlockStyle}"
+                                   FontSize="{ThemeResource TextStyleLargeFontSize}" TextWrapping="Wrap">
                             <Run Text="{x:Bind ViewModel.Movie.Year, Mode=OneWay}" />
                             <Run Text="  •  " />
                             <Run Text="{x:Bind ViewModel.Movie.Runtime, Mode=OneWay}" />
@@ -53,18 +64,13 @@
                             <Run Text="  •  " />
                             <Run Text="{x:Bind ViewModel.Movie.Rating, Mode=OneWay}" />
                             <Run Text="/ 10" />
-                        </TextBlock>
-                        <Ellipse
-                            Fill="{x:Bind ViewModel.SelectedTorrent.Health, Mode=OneWay, Converter={StaticResource SeedsToColorConverter}}"
-                            ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.HealthText, Mode=OneWay}"
-                            Width="20" Height="20" HorizontalAlignment="Right" />
-                    </Grid>
+                    </TextBlock>
                     <TextBlock Grid.Row="2" Text="{x:Bind ViewModel.Movie.DescriptionFull, Mode=OneWay}"
                                TextWrapping="Wrap" FontSize="{ThemeResource TextStyleLargeFontSize}" />
-                    <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,20,0,0" VerticalAlignment="Bottom">
-                        <Button Margin="0,0,10,0" Content="Watch Now" Command="{x:Bind ViewModel.PlayCommand}" />
-                        <Button Margin="0,0,10,0" Content="Watch Trailer" Command="{x:Bind ViewModel.TrailerCommand}" />
-                        <ToggleSwitch OnContent="1080p" OffContent="720p" 
+                    <RelativePanel Grid.Row="3" Margin="0,20,0,0" VerticalAlignment="Bottom">
+                        <Button x:Name="WatchButton" Margin="0,0,10,0" Content="Watch Now" Command="{x:Bind ViewModel.PlayCommand}" />
+                        <Button x:Name="TrailerButton" RelativePanel.RightOf="WatchButton" Margin="0,0,10,0" Content="Watch Trailer" Command="{x:Bind ViewModel.TrailerCommand}" />
+                        <ToggleSwitch x:Name="QualitySwitch" RelativePanel.RightOf="TrailerButton" OnContent="1080p" OffContent="720p" 
                                       IsOn="{x:Bind ViewModel.Is1080, Mode=TwoWay}"
                                       ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.Size, Mode=OneWay}"
                                       IsEnabled="{x:Bind ViewModel.IsQualityToggleEnabled, Mode=OneWay}">
@@ -74,7 +80,7 @@
                                 </core:EventTriggerBehavior>
                             </interactivity:Interaction.Behaviors>
                         </ToggleSwitch>
-                    </StackPanel>
+                    </RelativePanel>
                 </Grid>
             </Grid>
         </Grid>
@@ -85,6 +91,10 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="PosterImage.Margin" Value="0,0,0,20" />
+                        <Setter Target="ContentGrid.Margin" Value="20,26,20,26" />
+                        <Setter Target="QualitySwitch.(RelativePanel.Below)" Value="WatchButton" />
+                        <Setter Target="QualitySwitch.(RelativePanel.RightOf)" Value="" />
                         <Setter Target="MetadataGrid.(Grid.Row)" Value="1" />
                         <Setter Target="MetadataGrid.(Grid.Column)" Value="0" />
                         <Setter Target="ContentGrid.ColumnDefinitions[1].Width" Value="0" />
