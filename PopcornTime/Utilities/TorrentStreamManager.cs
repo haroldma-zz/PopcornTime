@@ -135,7 +135,7 @@ namespace PopcornTime.Utilities
             SlidingPicker = new SlidingWindowPicker(new PriorityPicker(new StandardPicker()))
             {
                 HighPrioritySetStart = _firstPieceIndex,
-                HighPrioritySetSize = _pieceToPrepare + _firstPieceIndex
+                HighPrioritySetSize = _pieceToPrepare
             };
             TorrentManager.ChangePicker(SlidingPicker);
             TorrentManager.PieceManager.BlockReceived -= PieceManagerOnBlockReceived;

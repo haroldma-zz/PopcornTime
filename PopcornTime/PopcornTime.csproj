@@ -152,6 +152,7 @@
     <Compile Include="Tools\Mvvm\Command.cs" />
     <Compile Include="Tools\Mvvm\ViewModelBase.cs" />
     <Compile Include="Tools\Converters\VisibilityConverter.cs" />
+    <Compile Include="Tools\TextBoxEnterKeyBehavior.cs" />
     <Compile Include="Utilities\ColorUtility.cs" />
     <Compile Include="Utilities\DesignTime\DesignCredentialUtility.cs" />
     <Compile Include="Utilities\DesignTime\DesignDispatcherUtility.cs" />

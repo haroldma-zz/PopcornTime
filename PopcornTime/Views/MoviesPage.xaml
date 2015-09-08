@@ -12,17 +12,40 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     DataContext="{Binding Movies, Mode=OneTime, Source={StaticResource ViewModelLocator}}">
-
-    <Grid Background="{ThemeResource SystemChromeLowBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.Resources>
             <tools:ActualSizePropertyProxy Element="{Binding ElementName=ItemsWrapGrid}" x:Name="Proxy" />
         </Grid.Resources>
-        <common:BetterGridView  Padding="0,20,0,0"
-            VerticalOffset="{x:Bind ViewModel.VerticalOffset, Mode=TwoWay}"
-            SelectionMode="None" 
-            IsItemClickEnabled="True" 
-            ItemsSource="{x:Bind ViewModel.MovieCollection, Mode=OneWay}" 
-            ItemTemplate="{StaticResource YtsMovieTemplate}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Background="{ThemeResource SystemChromeLowBrush}">
+            <RelativePanel Margin="10">
+                <StackPanel x:Name="ComboBoxesPanel" Orientation="Horizontal">
+                    <ComboBox Width="150" ItemsSource="{x:Bind ViewModel.Genres}"
+                              SelectedIndex="{x:Bind ViewModel.SelectedGenre, Mode=TwoWay}" Header="Genre" />
+                    <ComboBox Width="150" ItemsSource="{x:Bind ViewModel.Sorters}"
+                              SelectedIndex="{x:Bind ViewModel.SelectedSort, Mode=TwoWay}" Header="Sort by"
+                              Margin="10,0,0,0" />
+                </StackPanel>
+                <TextBox x:Name="SearchBox" RelativePanel.RightOf="ComboBoxesPanel"
+                         Text="{Binding SearchTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Width="200" Header="Search" Margin="10,0,0,0">
+                    <interactivity:Interaction.Behaviors>
+                        <tools:TextBoxEnterKeyBehavior>
+                            <core:InvokeCommandAction Command="{x:Bind ViewModel.SearchEnterCommand}" />
+                        </tools:TextBoxEnterKeyBehavior>
+                    </interactivity:Interaction.Behaviors>
+                </TextBox>
+            </RelativePanel>
+        </Grid>
+        <common:BetterGridView Grid.Row="1" Padding="0,20,0,0"
+                               VerticalOffset="{x:Bind ViewModel.VerticalOffset, Mode=TwoWay}"
+                               SelectionMode="None"
+                               IsItemClickEnabled="True"
+                               ItemsSource="{x:Bind ViewModel.MovieCollection, Mode=OneWay}"
+                               ItemTemplate="{StaticResource YtsMovieTemplate}">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemClick">
                     <core:InvokeCommandAction Command="{x:Bind ViewModel.MovieClickCommand}" />
@@ -30,9 +53,31 @@
             </interactivity:Interaction.Behaviors>
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid x:Name="ItemsWrapGrid" ItemWidth="{Binding ActualWidthValue, Source={StaticResource Proxy}, Converter={StaticResource UniformSpacingConverter}, ConverterParameter=160}" Orientation="Horizontal"/>
+                    <ItemsWrapGrid x:Name="ItemsWrapGrid"
+                                   ItemWidth="{Binding ActualWidthValue, Source={StaticResource Proxy}, Converter={StaticResource UniformSpacingConverter}, ConverterParameter=160}"
+                                   Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
         </common:BetterGridView>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WindowSizeStates">
+                <VisualState x:Name="NarrowScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SearchBox.(RelativePanel.Below)" Value="ComboBoxesPanel" />
+                        <Setter Target="SearchBox.(RelativePanel.RightOf)" Value="" />
+                        <Setter Target="SearchBox.Margin" Value="0,5,0,0" />
+                        <Setter Target="SearchBox.Width" Value="310" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="WideScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="600" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </navigationService:NavigatablePage>

@@ -31,11 +31,6 @@ namespace PopcornTime.ViewModels
             QualityToggledCommand = new Command(QualityToggledExecute);
         }
 
-        private async void TrailerExecute()
-        {
-            await Launcher.LaunchUriAsync(new Uri($"https://youtu.be/{Movie.YoutubeTrailerCode}"));
-        }
-
         public Command TrailerCommand { get; }
 
         public Command QualityToggledCommand { get; }
@@ -70,6 +65,11 @@ namespace PopcornTime.ViewModels
         {
             get { return _isQualityToggleEnabled; }
             set { Set(ref _isQualityToggleEnabled, value); }
+        }
+
+        private async void TrailerExecute()
+        {
+            await Launcher.LaunchUriAsync(new Uri($"https://youtu.be/{Movie.YoutubeTrailerCode}"));
         }
 
         private void QualityToggledExecute()

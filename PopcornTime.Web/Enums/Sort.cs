@@ -8,6 +8,7 @@
         Peers,
         Seeds,
         DownloadCount,
+        TrendingScore,
         LikeCount,
         DateAdded
     }
