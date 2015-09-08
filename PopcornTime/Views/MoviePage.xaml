@@ -14,12 +14,12 @@
     <ScrollViewer>
         <ScrollViewer.Background>
             <ImageBrush AlignmentY="Center" AlignmentX="Center"
-                            ImageSource="{x:Bind ViewModel.Movie.Images.BackgroundImageOriginal, Mode=OneWay}"
-                            Opacity=".35"
-                            Stretch="UniformToFill" />
+                        ImageSource="{x:Bind ViewModel.Movie.Images.BackgroundImageOriginal, Mode=OneWay}"
+                        Opacity=".35"
+                        Stretch="UniformToFill" />
         </ScrollViewer.Background>
         <Grid>
-            <Grid x:Name="ContentGrid" Margin="40,75,40,75">
+            <Grid x:Name="ContentGrid" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource ReverseVisibilityConverter}}" Margin="40,75,40,75">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width=".5*" MaxWidth="800" />
                     <ColumnDefinition Width="*" />
@@ -37,40 +37,43 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{x:Bind ViewModel.Movie.Title, Mode=OneWay}"
-                               Style="{StaticResource LargeHeaderTextBlockStyle}"
-                               FontWeight="SemiBold" TextLineBounds="TrimToCapHeight"  TextWrapping="Wrap" />
+                                   Style="{StaticResource LargeHeaderTextBlockStyle}"
+                                   FontWeight="SemiBold" TextLineBounds="TrimToCapHeight" TextWrapping="Wrap" />
                         <Ellipse VerticalAlignment="Top"
-                            Grid.Column="1"
-                            Fill="{x:Bind ViewModel.SelectedTorrent.Health, Mode=OneWay, Converter={StaticResource SeedsToColorConverter}}"
-                            ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.HealthText, Mode=OneWay}"
-                            Width="20" Height="20" />
+                                 Grid.Column="1"
+                                 Fill="{x:Bind ViewModel.SelectedTorrent.Health, Mode=OneWay, Converter={StaticResource SeedsToColorConverter}}"
+                                 ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.HealthText, Mode=OneWay}"
+                                 Width="20" Height="20" />
                     </Grid>
-                    <TextBlock  Grid.Row="1" Margin="0,0,0,10" Style="{StaticResource SubtleTextBlockStyle}"
-                                   FontSize="{ThemeResource TextStyleLargeFontSize}" TextWrapping="Wrap">
-                            <Run Text="{x:Bind ViewModel.Movie.Year, Mode=OneWay}" />
-                            <Run Text="  •  " />
-                            <Run Text="{x:Bind ViewModel.Movie.Runtime, Mode=OneWay}" />
-                            <Run Text="min" />
-                            <Run Text="  •  " />
-                            <Run
-                                Text="{x:Bind ViewModel.Movie.Genres, Converter={StaticResource ListToTextConverter}, Mode=OneWay}" />
-                            <Run Text="  •  " />
-                            <Run Text="{x:Bind ViewModel.Movie.Rating, Mode=OneWay}" />
-                            <Run Text="/ 10" />
+                    <TextBlock Grid.Row="1" Margin="0,0,0,10" Style="{StaticResource SubtleTextBlockStyle}"
+                               FontSize="{ThemeResource TextStyleLargeFontSize}" TextWrapping="Wrap">
+                        <Run Text="{x:Bind ViewModel.Movie.Year, Mode=OneWay}" />
+                        <Run Text="  •  " />
+                        <Run Text="{x:Bind ViewModel.Movie.Runtime, Mode=OneWay}" />
+                        <Run Text="min" />
+                        <Run Text="  •  " />
+                        <Run
+                            Text="{x:Bind ViewModel.Movie.Genres, Converter={StaticResource ListToTextConverter}, Mode=OneWay}" />
+                        <Run Text="  •  " />
+                        <Run Text="{x:Bind ViewModel.Movie.Rating, Mode=OneWay}" />
+                        <Run Text="/ 10" />
                     </TextBlock>
                     <TextBlock Grid.Row="2" Text="{x:Bind ViewModel.Movie.DescriptionFull, Mode=OneWay}"
                                TextWrapping="Wrap" FontSize="{ThemeResource TextStyleLargeFontSize}" />
                     <RelativePanel Grid.Row="3" Margin="0,20,0,0" VerticalAlignment="Bottom">
-                        <Button x:Name="WatchButton" Margin="0,0,10,0" Content="Watch Now" Command="{x:Bind ViewModel.PlayCommand}" />
-                        <Button x:Name="TrailerButton" RelativePanel.RightOf="WatchButton" Margin="0,0,10,0" Content="Watch Trailer" Command="{x:Bind ViewModel.TrailerCommand}" />
-                        <ToggleSwitch x:Name="QualitySwitch" RelativePanel.RightOf="TrailerButton" OnContent="1080p" OffContent="720p" 
+                        <Button x:Name="WatchButton" Margin="0,0,10,0" Content="Watch Now"
+                                Command="{x:Bind ViewModel.PlayCommand}" />
+                        <Button x:Name="TrailerButton" RelativePanel.RightOf="WatchButton" Margin="0,0,10,0"
+                                Content="Watch Trailer" Command="{x:Bind ViewModel.TrailerCommand}" />
+                        <ToggleSwitch x:Name="QualitySwitch" RelativePanel.RightOf="TrailerButton" OnContent="1080p"
+                                      OffContent="720p"
                                       IsOn="{x:Bind ViewModel.Is1080, Mode=TwoWay}"
                                       ToolTipService.ToolTip="{x:Bind ViewModel.SelectedTorrent.Size, Mode=OneWay}"
                                       IsEnabled="{x:Bind ViewModel.IsQualityToggleEnabled, Mode=OneWay}">
@@ -82,6 +85,9 @@
                         </ToggleSwitch>
                     </RelativePanel>
                 </Grid>
+            </Grid>
+            <Grid Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+                <ProgressBar IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
             </Grid>
         </Grid>
         <VisualStateManager.VisualStateGroups>

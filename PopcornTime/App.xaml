@@ -12,6 +12,7 @@
 
             <converters:UniformSpacingConverter x:Key="UniformSpacingConverter" />
             <converters:VisibilityConverter x:Key="VisibilityConverter" />
+            <converters:VisibilityConverter x:Key="ReverseVisibilityConverter" Reverse="True" />
             <converters:SeedsToColorConverter x:Key="SeedsToColorConverter" />
             <converters:ListToTextConverter x:Key="ListToTextConverter" Seperator=" / " />
             <converters:StreamStateConverter x:Key="PerparingStateConverter" State="Preparing" />

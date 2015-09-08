@@ -160,7 +160,7 @@ namespace PopcornTime.ViewModels
                 VerticalOffset = (double) state["VerticalOffset"];
                 SelectedGenre = int.Parse(state["SelectedGenre"].ToString());
                 SelectedSort = int.Parse(state["SelectedSort"].ToString());
-                SearchTerm = state["SearchTerm"].ToString();
+                SearchTerm = state["SearchTerm"] as string;
             }
 
             if (MovieCollection == null)
