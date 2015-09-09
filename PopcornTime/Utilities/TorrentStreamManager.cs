@@ -16,7 +16,8 @@ namespace PopcornTime.Utilities
             Metadata,
             Preparing,
             Starting,
-            Streaming
+            Streaming,
+            Error
         }
 
         private const int MaxPrepareCount = 20;
@@ -52,6 +53,7 @@ namespace PopcornTime.Utilities
             CurrentState = State.Unknown;
         }
 
+        public event EventHandler Error;
         public event EventHandler StreamReady;
         public event EventHandler<StreamProgressEventArgs> StreamProgress;
 
@@ -129,9 +131,14 @@ namespace PopcornTime.Utilities
 
         private void TorrentManager_TorrentStateChanged(object sender, TorrentStateChangedEventArgs e)
         {
-            if (e.OldState != TorrentState.Metadata || e.NewState == TorrentState.Error) return;
+            if (e.NewState == TorrentState.Error)
+            {
+                CurrentState = State.Error;
+                Error?.Invoke(this, EventArgs.Empty);
+                return;
+            }
 
-            TorrentManager.TorrentStateChanged -= TorrentManager_TorrentStateChanged;
+            if (e.OldState != TorrentState.Metadata) return;
             CurrentState = State.Preparing;
             OnStreamProgress(0, 0, 0, 0);
 

@@ -90,8 +90,19 @@ namespace PopcornTime.ViewModels
             _torrentStreamService.CreateManager(hash);
             _torrentStreamService.StreamManager.StreamProgress += StreamManagerOnStreamProgress;
             _torrentStreamService.StreamManager.StreamReady += StreamManagerOnStreamReady;
+            _torrentStreamService.StreamManager.Error += StreamManagerOnError;
             _torrentStreamService.StreamManager.StartDownload();
             State = _torrentStreamService.StreamManager.CurrentState;
+        }
+
+        private void StreamManagerOnError(object sender, EventArgs eventArgs)
+        {
+            _torrentStreamService.Stop();
+            _dispatcherUtility.Run(() =>
+            {
+                CurtainPrompt.ShowError("Problem starting playback.");
+                _navigationService.GoBack();
+            });
         }
 
         public override void OnNavigatedFrom()
@@ -112,6 +123,7 @@ namespace PopcornTime.ViewModels
             {
                 _torrentStreamService.StreamManager.StreamProgress -= StreamManagerOnStreamProgress;
                 _torrentStreamService.StreamManager.StreamReady -= StreamManagerOnStreamReady;
+                _torrentStreamService.StreamManager.Error -= StreamManagerOnError;
                 _navigationService.Navigate(typeof (PlayerPage));
             });
         }
