@@ -1,2 +1,0 @@
-MainPackage=C:\Users\Harold\Source\Repos\PopcornTime\PopcornTime\bin\x86\Release\Upload\PopcornTime_1.0.0.0_x86.appx
-SymbolPackage=C:\Users\Harold\Source\Repos\PopcornTime\PopcornTime\AppPackages\PopcornTime_1.0.0.0\PopcornTime_1.0.0.0_x86.appxsym

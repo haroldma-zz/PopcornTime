@@ -85,8 +85,7 @@ namespace PopcornTime.ViewModels
             _navigationService.Navigate(typeof (StartingPage), new PlaybackTorrent
             {
                 Title = Movie.TitleLong,
-                //TorrentUrl = SelectedTorrent.Url,
-                TorrentHash = SelectedTorrent.Hash,
+                TorrentUrl = SelectedTorrent.Url,
                 BackgroundImageUrl = Movie.Images.BackgroundImageOriginal
             });
         }

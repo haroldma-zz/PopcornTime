@@ -22,6 +22,7 @@
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>A0638A0387A3440B3F260E1518AA91404D6B88E8</PackageCertificateThumbprint>
     <AppxBundle>Always</AppxBundle>
+    <ApplicationInsightsResourceId>/subscriptions/91866a79-31b2-4bdb-9e24-3e4f686872ed/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/PopcornTime</ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -96,6 +97,7 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="PopcornTime_StoreKey.pfx" />
     <None Include="project.json" />
+    <None Include="Service References\Application Insights\ConnectedService.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -284,6 +286,9 @@
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
     </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

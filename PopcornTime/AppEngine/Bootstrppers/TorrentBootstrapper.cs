@@ -34,12 +34,19 @@ namespace PopcornTime.AppEngine.Bootstrppers
             var port = settingsUtility.Read(ApplicationConstants.TorrentPortKey,
                    ApplicationConstants.DefaultTorrentPort);
 
-            // port mapping
-            var discoverer = new NatDiscoverer();
-            NatDevice device;
-            using (var cts = new CancellationTokenSource(10000))
-                device = discoverer.DiscoverDeviceAsync(PortMapper.Upnp, cts).Result;
-            device.CreatePortMapAsync(new Mapping(Protocol.Tcp, port, port, 0, "Popcorn Time")).Wait();
+            try
+            {
+                // port mapping
+                var discoverer = new NatDiscoverer();
+                NatDevice device;
+                using (var cts = new CancellationTokenSource(5000))
+                    device = discoverer.DiscoverDeviceAsync(PortMapper.Upnp, cts).Result;
+                device.CreatePortMapAsync(new Mapping(Protocol.Tcp, port, port, 0, "Popcorn Time")).Wait();
+            }
+            catch
+            {
+                // ignored
+            }
 
             // register the dht engine
             engine.RegisterDht(dht);

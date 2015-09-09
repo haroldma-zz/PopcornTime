@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="3237Zumicts.PopcornTimeforWindows10" Publisher="CN=E38C2EDA-A823-4D3D-BBB1-8F0B81FF4C7B" Version="1.1.0.0" />
+  <Identity Name="3237Zumicts.PopcornTimeforWindows10" Publisher="CN=E38C2EDA-A823-4D3D-BBB1-8F0B81FF4C7B" Version="1.0.1.0" />
   <mp:PhoneIdentity PhoneProductId="d185add5-3213-4c29-91cc-453a1cb008dc" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Popcorn Time for Windows 10</DisplayName>
