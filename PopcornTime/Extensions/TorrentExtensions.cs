@@ -17,21 +17,33 @@ namespace PopcornTime.Extensions
             });
         }
 
+        public static TorrentManager CreateManager(this MagnetLink link, StorageFolder saveFolder)
+        {
+            return new TorrentManager(link, saveFolder, new TorrentSettings(4, 150, 0, 0)
+            {
+                UseDht = true,
+                EnablePeerExchange = true
+            });
+        }
+
         public static TorrentManager CreateManager(this InfoHash hash, StorageFolder saveFolder)
         {
             return new TorrentManager(hash, saveFolder, new TorrentSettings(4, 150, 0, 0)
             {
                 UseDht = true,
                 EnablePeerExchange = true
-            }, new List<RawTrackerTier>
-            {
-                new RawTrackerTier(new[]
+            }, RawTrackerTier.CreateTiers(new[]
                 {
+                    "udp://tracker.yify-torrents.com:80",
+                    "udp://tracker.yify-torrents.com:80",
                     "udp://tracker.openbittorrent.com:80",
+                    "udp://tracker.publicbt.org:80",
                     "udp://tracker.coppersurfer.tk:6969",
-                    "udp://open.demonii.com:1337"
-                })
-            });
+                    "udp://tracker.leechers-paradise.org:6969",
+                    "udp://open.demonii.com:1337",
+                    "udp://p4p.arenabg.ch:1337",
+                    "udp://p4p.arenabg.com:1337"
+            }));
         }
     }
 }

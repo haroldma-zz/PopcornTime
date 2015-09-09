@@ -30,6 +30,13 @@ namespace PopcornTime.Services.RunTime
             StreamManager = new TorrentStreamManager(manager);
         }
 
+        public void CreateManager(MagnetLink link)
+        {
+            var manager = link.CreateManager(_engine.Settings.SaveFolder);
+            _engine.Register(manager);
+            StreamManager = new TorrentStreamManager(manager);
+        }
+
         public void Stop()
         {
             var managerCopy = StreamManager;

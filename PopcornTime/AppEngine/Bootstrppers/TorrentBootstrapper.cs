@@ -31,6 +31,16 @@ namespace PopcornTime.AppEngine.Bootstrppers
             var dht = context.Resolve<IDhtEngine>();
             var settingsUtility = context.Resolve<ISettingsUtility>();
 
+            var port = settingsUtility.Read(ApplicationConstants.TorrentPortKey,
+                   ApplicationConstants.DefaultTorrentPort);
+
+            // port mapping
+            var discoverer = new NatDiscoverer();
+            NatDevice device;
+            using (var cts = new CancellationTokenSource(10000))
+                device = discoverer.DiscoverDeviceAsync(PortMapper.Upnp, cts).Result;
+            device.CreatePortMapAsync(new Mapping(Protocol.Tcp, port, port, 0, "Popcorn Time")).Wait();
+
             // register the dht engine
             engine.RegisterDht(dht);
 
@@ -45,15 +55,6 @@ namespace PopcornTime.AppEngine.Bootstrppers
             {
                 var torrentsFolder = engine.Settings.SaveFolder;
                 await StorageHelper.DeleteFolderContentAsync(torrentsFolder);
-
-                var port = settingsUtility.Read(ApplicationConstants.TorrentPortKey,
-                    ApplicationConstants.DefaultTorrentPort);
-
-                // port mapping
-                var discoverer = new NatDiscoverer();
-                var cts = new CancellationTokenSource(10000);
-                var device = await discoverer.DiscoverDeviceAsync(PortMapper.Upnp, cts).ConfigureAwait(false);
-                await device.CreatePortMapAsync(new Mapping(Protocol.Tcp, port, port, 0, "Popcorn Time")).ConfigureAwait(false);
             });
         }
     }

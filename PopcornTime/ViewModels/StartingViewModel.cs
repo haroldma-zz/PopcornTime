@@ -17,6 +17,8 @@ namespace PopcornTime.ViewModels
     {
         public string BackgroundImageUrl { get; set; }
         public string Title { get; set; }
+        public string TorrentUrl { get; set; }
+        public string MagnetLink { get; set; }
         public string TorrentHash { get; set; }
     }
 
@@ -77,7 +79,7 @@ namespace PopcornTime.ViewModels
             return playback.Title;
         }
 
-        public override void OnNavigatedTo(object parameter, NavigationMode mode, Dictionary<string, object> state)
+        public override async void OnNavigatedTo(object parameter, NavigationMode mode, Dictionary<string, object> state)
         {
             if (mode == NavigationMode.Back)
             {
@@ -86,8 +88,22 @@ namespace PopcornTime.ViewModels
             }
 
             PlaybackTorrent = (PlaybackTorrent) parameter;
-            var hash = InfoHash.FromHex(PlaybackTorrent.TorrentHash);
-            _torrentStreamService.CreateManager(hash);
+            if (!string.IsNullOrEmpty(PlaybackTorrent.TorrentUrl))
+            {
+                State = TorrentStreamManager.State.Metadata;
+                var torrent = await Torrent.LoadAsync(new Uri(PlaybackTorrent.TorrentUrl), "");
+                _torrentStreamService.CreateManager(torrent);
+            }
+            else if (!string.IsNullOrEmpty(PlaybackTorrent.MagnetLink))
+            {
+                var magnetLink = new MagnetLink(PlaybackTorrent.MagnetLink);
+                _torrentStreamService.CreateManager(magnetLink);
+            }
+            else
+            {
+                var hash = InfoHash.FromHex(PlaybackTorrent.TorrentHash);
+                _torrentStreamService.CreateManager(hash);
+            }
             _torrentStreamService.StreamManager.StreamProgress += StreamManagerOnStreamProgress;
             _torrentStreamService.StreamManager.StreamReady += StreamManagerOnStreamReady;
             _torrentStreamService.StreamManager.Error += StreamManagerOnError;
