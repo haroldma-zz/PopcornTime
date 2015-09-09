@@ -21,7 +21,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid Background="{ThemeResource SystemChromeLowBrush}">
-            <RelativePanel Margin="10">
+            <RelativePanel Margin="10,26,10,10">
                 <StackPanel x:Name="ComboBoxesPanel" Orientation="Horizontal">
                     <ComboBox Width="150" ItemsSource="{x:Bind ViewModel.Genres}"
                               SelectedIndex="{x:Bind ViewModel.SelectedGenre, Mode=TwoWay}" Header="Genre" />

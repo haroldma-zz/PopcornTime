@@ -17,8 +17,15 @@
                             Stretch="UniformToFill" />
         </Grid.Background>
         <StackPanel VerticalAlignment="Center"
-              Visibility="{x:Bind ViewModel.State, Mode=OneWay, Converter={StaticResource PerparingStateConverter}}">
+              Visibility="{x:Bind ViewModel.State, Mode=OneWay, Converter={StaticResource MetadataStateConverter}}">
             <TextBlock Text="Connecting..." FontSize="28" TextAlignment="Center"
+                           Style="{StaticResource BaseTextBlockStyle}"
+                           FontWeight="SemiBold" TextLineBounds="Tight" Margin="0,0,0,20" />
+            <ProgressBar IsIndeterminate="True" />
+        </StackPanel>
+        <StackPanel VerticalAlignment="Center"
+              Visibility="{x:Bind ViewModel.State, Mode=OneWay, Converter={StaticResource PerparingStateConverter}}">
+            <TextBlock Text="Starting..." FontSize="28" TextAlignment="Center"
                            Style="{StaticResource BaseTextBlockStyle}"
                            FontWeight="SemiBold" TextLineBounds="Tight" Margin="0,0,0,20" />
             <ProgressBar IsIndeterminate="True" />
@@ -29,7 +36,7 @@
                 <TextBlock Text="{x:Bind ViewModel.PlaybackTorrent.Title, Mode=OneWay}" FontSize="28"
                            Style="{StaticResource BaseTextBlockStyle}"
                            FontWeight="SemiBold" TextLineBounds="Tight" TextAlignment="Center" Margin="0,0,0,100" />
-                <TextBlock Text="Starting..." FontSize="28" TextAlignment="Center"
+                <TextBlock Text="Downloading..." FontSize="28" TextAlignment="Center"
                            Style="{StaticResource BaseTextBlockStyle}"
                            FontWeight="SemiBold" TextLineBounds="Tight" Margin="0,0,0,20" />
                 <ProgressBar Value="{x:Bind ViewModel.PrepareProgress, Mode=OneWay}"

@@ -16,5 +16,22 @@ namespace PopcornTime.Extensions
                 EnablePeerExchange = true
             });
         }
+
+        public static TorrentManager CreateManager(this InfoHash hash, StorageFolder saveFolder)
+        {
+            return new TorrentManager(hash, saveFolder, new TorrentSettings(4, 150, 0, 0)
+            {
+                UseDht = true,
+                EnablePeerExchange = true
+            }, new List<RawTrackerTier>
+            {
+                new RawTrackerTier(new[]
+                {
+                    "udp://tracker.openbittorrent.com:80",
+                    "udp://tracker.coppersurfer.tk:6969",
+                    "udp://open.demonii.com:1337"
+                })
+            });
+        }
     }
 }

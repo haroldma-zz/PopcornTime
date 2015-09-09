@@ -1,0 +1,6 @@
+MainPackage=C:\Users\Harold\Source\Repos\PopcornTime\PopcornTime\bin\ARM\Release\Upload\PopcornTime_1.0.0.0_ARM.appx
+SymbolPackage=C:\Users\Harold\Source\Repos\PopcornTime\PopcornTime\AppPackages\PopcornTime_1.0.0.0\PopcornTime_1.0.0.0_ARM.appxsym
+ResourcePack=C:\Users\Harold\Source\Repos\PopcornTime\PopcornTime\_scale-100.appx
+ResourcePack=C:\Users\Harold\Source\Repos\PopcornTime\PopcornTime\_scale-125.appx
+ResourcePack=C:\Users\Harold\Source\Repos\PopcornTime\PopcornTime\_scale-150.appx
+ResourcePack=C:\Users\Harold\Source\Repos\PopcornTime\PopcornTime\_scale-400.appx

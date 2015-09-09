@@ -17,7 +17,11 @@
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>PopcornTime_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>PopcornTime_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>A0638A0387A3440B3F260E1518AA91404D6B88E8</PackageCertificateThumbprint>
+    <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -90,6 +94,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="PopcornTime_StoreKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +111,6 @@
     <Compile Include="AppEngine\Modules\ViewModelModule.cs" />
     <Compile Include="AppEngine\Providers\DhtListenerProvider.cs" />
     <Compile Include="AppEngine\Providers\IProvider.cs" />
-    <Compile Include="AppEngine\Providers\NatManagerProvider.cs" />
     <Compile Include="AppEngine\Providers\ProviderHelper.cs" />
     <Compile Include="AppEngine\Providers\ClientEngineProvider.cs" />
     <Compile Include="Common\AsyncHelper.cs" />
@@ -216,6 +220,7 @@
     <Content Include="Assets\StoreLogo.scale-400.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

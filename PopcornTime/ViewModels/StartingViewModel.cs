@@ -17,7 +17,7 @@ namespace PopcornTime.ViewModels
     {
         public string BackgroundImageUrl { get; set; }
         public string Title { get; set; }
-        public string TorrentUrl { get; set; }
+        public string TorrentHash { get; set; }
     }
 
     public class StartingViewModel : ViewModelBase
@@ -77,7 +77,7 @@ namespace PopcornTime.ViewModels
             return playback.Title;
         }
 
-        public override async void OnNavigatedTo(object parameter, NavigationMode mode, Dictionary<string, object> state)
+        public override void OnNavigatedTo(object parameter, NavigationMode mode, Dictionary<string, object> state)
         {
             if (mode == NavigationMode.Back)
             {
@@ -86,8 +86,8 @@ namespace PopcornTime.ViewModels
             }
 
             PlaybackTorrent = (PlaybackTorrent) parameter;
-            var torrent = await Torrent.LoadAsync(new Uri(PlaybackTorrent.TorrentUrl), "");
-            _torrentStreamService.CreateManager(torrent);
+            var hash = InfoHash.FromHex(PlaybackTorrent.TorrentHash);
+            _torrentStreamService.CreateManager(hash);
             _torrentStreamService.StreamManager.StreamProgress += StreamManagerOnStreamProgress;
             _torrentStreamService.StreamManager.StreamReady += StreamManagerOnStreamReady;
             _torrentStreamService.StreamManager.StartDownload();

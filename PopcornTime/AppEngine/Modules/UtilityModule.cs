@@ -3,7 +3,6 @@ using PopcornTime.AppEngine.Providers;
 using PopcornTime.Utilities.DesignTime;
 using PopcornTime.Utilities.Interfaces;
 using PopcornTime.Utilities.RunTime;
-using Universal.Nat;
 using Universal.Torrent.Client;
 using Universal.Torrent.Dht;
 using Universal.Torrent.Dht.Listeners;
@@ -26,7 +25,6 @@ namespace PopcornTime.AppEngine.Modules
             builder.RegisterType<SettingsUtility>().As<ISettingsUtility>();
 
             builder.RegisterType<ClientEngine, ClientEngineProvider>().SingleInstance();
-            builder.RegisterType<NatManager, NatManagerProvider>().SingleInstance();
             builder.RegisterType<DhtListener, DhtListenerProvider>().SingleInstance();
             builder.RegisterType<DhtEngine>().As<IDhtEngine>().SingleInstance();
         }

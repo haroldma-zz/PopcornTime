@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Autofac;
+using PopcornTime.Helpers;
+using PopcornTime.Utilities.Interfaces;
 using Universal.Nat;
+using Universal.Nat.Enums;
 using Universal.Torrent.Client;
 using Universal.Torrent.Common;
 using Universal.Torrent.Dht.Listeners;
@@ -24,12 +27,9 @@ namespace PopcornTime.AppEngine.Bootstrppers
         internal void Start(IComponentContext context)
         {
             var engine = context.Resolve<ClientEngine>();
-            var natManager = context.Resolve<NatManager>();
             var dhtListner = context.Resolve<DhtListener>();
             var dht = context.Resolve<IDhtEngine>();
-
-            // start the nat manager
-            natManager.Start();
+            var settingsUtility = context.Resolve<ISettingsUtility>();
 
             // register the dht engine
             engine.RegisterDht(dht);
@@ -45,6 +45,15 @@ namespace PopcornTime.AppEngine.Bootstrppers
             {
                 var torrentsFolder = engine.Settings.SaveFolder;
                 await StorageHelper.DeleteFolderContentAsync(torrentsFolder);
+
+                var port = settingsUtility.Read(ApplicationConstants.TorrentPortKey,
+                    ApplicationConstants.DefaultTorrentPort);
+
+                // port mapping
+                var discoverer = new NatDiscoverer();
+                var cts = new CancellationTokenSource(10000);
+                var device = await discoverer.DiscoverDeviceAsync(PortMapper.Upnp, cts).ConfigureAwait(false);
+                await device.CreatePortMapAsync(new Mapping(Protocol.Tcp, port, port, 0, "Popcorn Time")).ConfigureAwait(false);
             });
         }
     }

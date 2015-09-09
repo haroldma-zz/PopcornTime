@@ -13,6 +13,7 @@ namespace PopcornTime.Utilities
         public enum State
         {
             Unknown,
+            Metadata,
             Preparing,
             Starting,
             Streaming
@@ -34,8 +35,7 @@ namespace PopcornTime.Utilities
             TorrentManager = torrentManager;
             _prepareSize = prepareSize;
 
-            // Select the largest file
-            SetSelectedFile(-1);
+            TorrentManager.TorrentStateChanged += TorrentManager_TorrentStateChanged;
         }
 
         public TorrentManager TorrentManager { get; }
@@ -127,10 +127,15 @@ namespace PopcornTime.Utilities
             _pieceToPrepare = activePieceCount;
         }
 
-        public void StartDownload()
+        private void TorrentManager_TorrentStateChanged(object sender, TorrentStateChangedEventArgs e)
         {
-            if (CurrentState == State.Streaming) return;
+            if (e.OldState != TorrentState.Metadata || e.NewState == TorrentState.Error) return;
+
+            TorrentManager.TorrentStateChanged -= TorrentManager_TorrentStateChanged;
             CurrentState = State.Preparing;
+            OnStreamProgress(0, 0, 0, 0);
+
+            SetSelectedFile(-1);
 
             SlidingPicker = new SlidingWindowPicker(new PriorityPicker(new StandardPicker()))
             {
@@ -144,7 +149,17 @@ namespace PopcornTime.Utilities
             var blockCount = _pieceToPrepare*TorrentManager.Torrent.PieceLength/
                              (double) Piece.BlockSize;
             _progressStep = 100/blockCount;
-            
+        }
+
+        public void StartDownload()
+        {
+            if (CurrentState == State.Streaming) return;
+
+            if (TorrentManager.Torrent != null)
+                TorrentManager_TorrentStateChanged(null,
+                    new TorrentStateChangedEventArgs(TorrentManager, TorrentState.Metadata, TorrentState.Hashing));
+            else
+                CurrentState = State.Metadata;
             TorrentManager.Start();
         }
 
@@ -152,14 +167,14 @@ namespace PopcornTime.Utilities
         {
             if (CurrentState == State.Preparing)
                 CurrentState = State.Starting;
-            
+
             if (args.Piece.Index >= _firstPieceIndex && args.Piece.Index <= _pieceToPrepare + _firstPieceIndex)
                 _prepareProgress += _progressStep;
-          
+
 
             OnStreamProgress(_prepareProgress, TorrentManager.Progress, TorrentManager.Peers.Seeds,
                 TorrentManager.Monitor.DownloadSpeed);
-            
+
             if (CurrentState == State.Starting && _prepareProgress.CompareTo(100) >= 0)
             {
                 CurrentState = State.Streaming;

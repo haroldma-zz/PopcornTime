@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using PopcornTime.Common;
 using PopcornTime.Utilities.Interfaces;
 
 namespace PopcornTime.Utilities.RunTime
@@ -19,7 +20,8 @@ namespace PopcornTime.Utilities.RunTime
             if (_coreDispatcher.HasThreadAccess)
                 action();
             else
-                _coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, new DispatchedHandler(action)).AsTask().Wait();
+                AsyncHelper.RunSync(
+                    () => _coreDispatcher.RunAsync(CoreDispatcherPriority.Normal, new DispatchedHandler(action)).AsTask());
         }
 
         public T Run<T>(Func<T> func)

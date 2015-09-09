@@ -15,6 +15,7 @@
             <converters:VisibilityConverter x:Key="ReverseVisibilityConverter" Reverse="True" />
             <converters:SeedsToColorConverter x:Key="SeedsToColorConverter" />
             <converters:ListToTextConverter x:Key="ListToTextConverter" Seperator=" / " />
+            <converters:StreamStateConverter x:Key="MetadataStateConverter" State="Metadata" />
             <converters:StreamStateConverter x:Key="PerparingStateConverter" State="Preparing" />
             <converters:StreamStateConverter x:Key="StartingStateConverter" State="Starting" />
             <converters:StreamStateConverter x:Key="UnknownStateConverter" State="Unknown" />

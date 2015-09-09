@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Audiotica.Windows.Services.NavigationService;
+using PopcornTime.Helpers;
 using PopcornTime.IncrementalLoading;
 using PopcornTime.Tools.Mvvm;
+using PopcornTime.Utilities.Interfaces;
 using PopcornTime.Views;
 using PopcornTime.Web;
 using PopcornTime.Web.Enums;
@@ -14,6 +17,7 @@ namespace PopcornTime.ViewModels
     public class MoviesViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
+        private readonly ISettingsUtility _settingsUtility;
 
         private bool _init;
         private MoviesIncrementalLoadingCollection _movieCollection;
@@ -61,9 +65,10 @@ namespace PopcornTime.ViewModels
             "Rating"
         };
 
-        public MoviesViewModel(INavigationService navigationService)
+        public MoviesViewModel(INavigationService navigationService, ISettingsUtility settingsUtility)
         {
             _navigationService = navigationService;
+            _settingsUtility = settingsUtility;
             MovieClickCommand = new Command<ItemClickEventArgs>(MovieClickExecute);
             SearchEnterCommand = new Command<string>(SearchEnterExecute);
         }
