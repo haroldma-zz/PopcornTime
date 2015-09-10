@@ -80,4 +80,11 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Compact">
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Help" Command="{x:Bind ViewModel.HelpCommand}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </navigationService:NavigatablePage>

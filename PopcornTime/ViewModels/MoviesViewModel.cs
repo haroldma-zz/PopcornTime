@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
+using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Audiotica.Windows.Services.NavigationService;
@@ -71,7 +73,16 @@ namespace PopcornTime.ViewModels
             _settingsUtility = settingsUtility;
             MovieClickCommand = new Command<ItemClickEventArgs>(MovieClickExecute);
             SearchEnterCommand = new Command<string>(SearchEnterExecute);
+            HelpCommand = new Command(HelpExecute);
         }
+
+        private async void HelpExecute()
+        {
+            var mailto = new Uri("mailto:?to=help@zumicts.com&subject=Popcorn Time App");
+            await Launcher.LaunchUriAsync(mailto);
+        }
+
+        public Command HelpCommand { get; }
 
         public Command<string> SearchEnterCommand { get; }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
@@ -34,19 +35,7 @@ namespace PopcornTime.AppEngine.Bootstrppers
             var port = settingsUtility.Read(ApplicationConstants.TorrentPortKey,
                    ApplicationConstants.DefaultTorrentPort);
 
-            try
-            {
-                // port mapping
-                var discoverer = new NatDiscoverer();
-                NatDevice device;
-                using (var cts = new CancellationTokenSource(5000))
-                    device = discoverer.DiscoverDeviceAsync(PortMapper.Upnp, cts).Result;
-                device.CreatePortMapAsync(new Mapping(Protocol.Tcp, port, port, 0, "Popcorn Time")).Wait();
-            }
-            catch
-            {
-                // ignored
-            }
+          OpenPort(port);
 
             // register the dht engine
             engine.RegisterDht(dht);
@@ -63,6 +52,25 @@ namespace PopcornTime.AppEngine.Bootstrppers
                 var torrentsFolder = engine.Settings.SaveFolder;
                 await StorageHelper.DeleteFolderContentAsync(torrentsFolder);
             });
+        }
+
+        private async void OpenPort(int port)
+        {
+            try
+            {
+                // port mapping
+                var discoverer = new NatDiscoverer();
+                NatDevice device;
+                using (var cts = new CancellationTokenSource())
+                    device = await discoverer.DiscoverDeviceAsync(PortMapper.Upnp, cts);
+                await device.CreatePortMapAsync(new Mapping(Protocol.Tcp, port, port, 0, "Popcorn Time"));
+                Debug.WriteLine("Port opened");
+            }
+            catch
+            {
+                // ignored
+                Debug.WriteLine("Port couldn't be open.");
+            }
         }
     }
 }
